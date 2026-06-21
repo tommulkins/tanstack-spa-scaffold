@@ -4,7 +4,7 @@ description: Run fallow static analysis on changed code — complexity, dead cod
 disable-model-invocation: true
 ---
 
-Follow [`docs/static-analysis-protocol.md`](../../docs/static-analysis-protocol.md).
+Follow [`docs/static-analysis-protocol.md`](../../../docs/static-analysis-protocol.md).
 
 After tests are green:
 
@@ -12,7 +12,7 @@ After tests are green:
 pnpm analyze
 ```
 
-Gates on **new** findings vs merge-base (`fallow audit`). On failure, capture JSON output in a dossier per [`docs/debug-protocol.md`](../../docs/debug-protocol.md).
+Gates on **new** findings vs merge-base (`fallow audit`). On failure, capture JSON output in a dossier per [`docs/debug-protocol.md`](../../../docs/debug-protocol.md).
 
 Informational full-repo report (non-gating): `pnpm analyze:report`.
 

@@ -100,7 +100,19 @@ Follow [`docs/kickoff-protocol.md`](./docs/kickoff-protocol.md). No feature code
 
 When context compacts, re-read `AGENTS.md`, `PLAN.md`, and `CONTEXT.md`. For UI, also re-read `DESIGN.md`.
 
-Skills in [`.agents/skills/`](./.agents/skills/): **grill-with-docs** (kickoff), **tdd** (red-green at contracts), **verify** (gates + self-heal on failure), **analyze** (fallow static analysis).
+## Skills
+
+Project skills in [`.agents/skills/`](./.agents/skills/) — inventory and lifecycle in [`docs/skills-protocol.md`](./docs/skills-protocol.md). After clone: `./scripts/link-agent-skills.sh` for Cursor/Claude discovery.
+
+| Order | Skill               | Use                                                  |
+| ----- | ------------------- | ---------------------------------------------------- |
+| 1     | **grill-with-docs** | Kickoff → `PLAN.md` approved                         |
+| 2     | **tdd**             | Red-green at Zod boundary                            |
+| 3     | **verify**          | Full gates + self-heal on failure                    |
+| 4     | **analyze**         | fallow (included in verify; run alone when triaging) |
+| 5     | **security-review** | Before merge — stub until fork #13                   |
+
+Protocols are canonical; skills are pointers only.
 
 ## Code style and conventions
 

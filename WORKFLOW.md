@@ -4,7 +4,7 @@ Living document for a rigorous, agent-assisted workflow: **new project or featur
 
 Each forked discussion adds decisions here. Prefer succinct entries; link out for detail.
 
-> **New session?** Read [`SESSION-HANDOFF.md`](./SESSION-HANDOFF.md) first — current state, repos, and **Fork #6** pickup prompt.
+> **New session?** Read [`SESSION-HANDOFF.md`](./SESSION-HANDOFF.md) first — current state, repos, and **Fork #7** pickup prompt.
 
 ---
 
@@ -555,15 +555,52 @@ Fallow ships MCP/LSP/skills in `node_modules`; we use the **protocol + root skil
 
 ## Fork #6 — Skills inventory
 
-**Status:** Not started
+**Status:** Decided
 
-Define project skills beyond `/grill-me` (e.g. project-kickoff, verify, **security-review**, review). Overlaps with agent files — see [Agent instruction files](#agent-instruction-files-decided).
+### Decision
 
-**Planned for fork #13:** `.agents/skills/security-review/` — see § Fork #13.
+**`.agents/skills/` is the single canonical skill tree.** Each skill is a thin YAML-frontmatter wrapper pointing at a `docs/*-protocol.md` file. Harness-specific dirs symlink here — no duplicated content.
 
-### Decisions
+### Inventory (lifecycle order)
 
-_To be filled in this fork._
+| Skill           | Protocol                           | Status          |
+| --------------- | ---------------------------------- | --------------- |
+| grill-with-docs | `docs/kickoff-protocol.md`         | Active          |
+| tdd             | `docs/tdd-protocol.md`             | Active          |
+| verify          | `docs/debug-protocol.md`           | Active          |
+| analyze         | `docs/static-analysis-protocol.md` | Active          |
+| security-review | `docs/security-protocol.md`        | Stub → fork #13 |
+
+Meta doc: `docs/skills-protocol.md`. Index: `.agents/skills/README.md`.
+
+### Harness wiring
+
+```sh
+./scripts/link-agent-skills.sh   # .cursor/skills + .claude/skills → .agents/skills
+```
+
+Optional — repo works without symlinks; agents read `.agents/skills/` directly.
+
+### Rules
+
+- **`disable-model-invocation: true`** on all workflow skills (explicit human/agent invoke)
+- Fix skill → protocol relative links as `../../../docs/...` from skill subfolders
+- Do not add skills without a protocol file first
+- fallow's bundled `node_modules` skill is separate; project workflow skills stay in `.agents/skills/`
+
+### Agent files (scaffold)
+
+| File                              | Purpose                                   |
+| --------------------------------- | ----------------------------------------- |
+| `docs/skills-protocol.md`         | Inventory, lifecycle, add-skill procedure |
+| `.agents/skills/README.md`        | Quick index                               |
+| `.agents/skills/security-review/` | Stub until fork #13                       |
+| `AGENTS.md` § Skills              | Summary table                             |
+
+### Open from fork #6
+
+- [ ] Harness-specific slash names doc — optional appendix in skills-protocol
+- [ ] Codex / Gemini skill path notes — add when adopted
 
 ---
 
@@ -719,7 +756,7 @@ Extend Notes demo:
 
 ## Fork #13 — Security review
 
-**Status:** Planned (not started)
+**Status:** Planned — **stub from fork #6** (`docs/security-protocol.md`, `.agents/skills/security-review/`); full protocol in fork #13 session
 
 **Goal:** Mandatory security pass before merge — supply chain, code diff review, and API/web baseline checks so agents cannot skip security the way they skip rigorous tests.
 
@@ -771,14 +808,14 @@ Agent must not introduce auth/secrets/storage without plan approval.
 
 #### 5. Deliverables (fork #13 session)
 
-| Artifact                                  | Purpose                                      |
-| ----------------------------------------- | -------------------------------------------- |
-| `docs/security-protocol.md`               | When to run, layers, escalation              |
-| `.agents/skills/security-review/SKILL.md` | Discovery → protocol + diff-review procedure |
-| `PLAN.md` + kickoff template              | § Security constraints stub                  |
-| `AGENTS.md`                               | Security gate in PR / done definition        |
-| Tier placement                            | Slow gate in ADR 0001 or ADR 0002            |
-| `WORKFLOW.md` § Fork #13                  | Mark decided                                 |
+| Artifact                                  | Purpose                                                           |
+| ----------------------------------------- | ----------------------------------------------------------------- |
+| `docs/security-protocol.md`               | When to run, layers, escalation — **stub from #6; expand in #13** |
+| `.agents/skills/security-review/SKILL.md` | Discovery wrapper → protocol — **done in #6**                     |
+| `PLAN.md` + kickoff template              | § Security constraints stub                                       |
+| `AGENTS.md`                               | Security gate in PR / done definition                             |
+| Tier placement                            | Slow gate in ADR 0001 or ADR 0002                                 |
+| `WORKFLOW.md` § Fork #13                  | Mark decided                                                      |
 
 #### 6. Explicitly not in fork #13 base scope
 
@@ -851,4 +888,5 @@ Ideas only — **do not copy code or config from these into `scaffold/`:**
 | 2026-06-21 | carry-forward | Closed open items from forks #1–#3; ADR 0001 tiered gates; skill symlinks; plan approval = PLAN.md         |
 | 2026-06-21 | scaffold      | Align `AGENTS.md` with agents.md — dev/test/PR sections; nested package AGENTS.md                          |
 | 2026-06-21 | #5            | fallow static analysis; ADR 0002; `pnpm analyze` in full gate; analyze skill                               |
+| 2026-06-21 | #6            | Skills inventory; `docs/skills-protocol.md`; security-review stub; fix skill protocol links                |
 | 2026-06-21 | #13 plan      | Security review fork — diff review, supply chain, slow gate before CI                                      |

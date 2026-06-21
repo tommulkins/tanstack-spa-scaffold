@@ -4,7 +4,7 @@ description: Red-green-refactor at the Zod contract boundary — schema tests fi
 disable-model-invocation: true
 ---
 
-Follow the canonical TDD procedure in [`docs/tdd-protocol.md`](../../docs/tdd-protocol.md).
+Follow the canonical TDD procedure in [`docs/tdd-protocol.md`](../../../docs/tdd-protocol.md).
 
 Prerequisites:
 

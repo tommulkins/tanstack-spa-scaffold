@@ -4,7 +4,7 @@ description: Kickoff grilling session that sharpens plans, updates CONTEXT.md an
 disable-model-invocation: true
 ---
 
-Follow the canonical kickoff procedure in [`docs/kickoff-protocol.md`](../../docs/kickoff-protocol.md).
+Follow the canonical kickoff procedure in [`docs/kickoff-protocol.md`](../../../docs/kickoff-protocol.md).
 
 Do not write feature code until `PLAN.md` § Plan is approved.
 

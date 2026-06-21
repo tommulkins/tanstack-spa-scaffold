@@ -29,7 +29,7 @@ The agent runs the feedback loop; the human steers architecture and approves mer
 
 ---
 
-## Completed (Forks #1–#5 + scaffold)
+## Completed (Forks #1–#6 + scaffold)
 
 ### Stack (locked in)
 
@@ -101,6 +101,15 @@ pnpm exec playwright install chromium
 
 ---
 
+### Fork #6 (Skills inventory)
+
+- `docs/skills-protocol.md` — lifecycle, inventory, add-skill rules
+- `.agents/skills/README.md` + five skills (security-review stub for fork #13)
+- Fixed skill → protocol paths; verify skill includes `pnpm analyze`
+- `./scripts/link-agent-skills.sh` for Cursor/Claude symlinks
+
+---
+
 ### Doc naming (fork #2 patch)
 
 - **`PLAN.md`** — feature kickoff (goal, plan, verification, recovery)
@@ -108,7 +117,7 @@ pnpm exec playwright install chromium
 
 ---
 
-## Resolved (forks #1–#5)
+## Resolved (forks #1–#6)
 
 | Topic               | Decision                                                                        |
 | ------------------- | ------------------------------------------------------------------------------- |
@@ -119,7 +128,7 @@ pnpm exec playwright install chromium
 | Skill symlinks      | Run `./scripts/link-agent-skills.sh` after clone                                |
 | `ai-workflows` repo | Optional later; `WORKFLOW.md` in scaffold for now                               |
 
-No open carry-forward items — proceed to **Fork #6**.
+No open carry-forward items — proceed to **Fork #7**.
 
 ---
 
@@ -145,26 +154,27 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 
 ---
 
-### Fork #6 — Skills inventory ← **START HERE**
+### Fork #6 — Skills inventory ✓
 
-**Goal:** Consolidate project skills and optional harness wiring.
-
-**Suggested topics:**
-
-- Inventory: grill-with-docs, tdd, verify, analyze, security-review (#13 planned)
-- Optional `.cursor/skills` / `.claude/skills` symlinks (`./scripts/link-agent-skills.sh`)
-- Defer duplicate content — skills point to protocols
-
-**Prompt for new session:**
-
-> Read `WORKFLOW.md` and `SESSION-HANDOFF.md`. We're on **Fork #6 — Skills inventory**. Propose decisions, keep it succinct, update WORKFLOW.md when we agree.
+**Decided:** `.agents/skills/` canonical; five skills → protocols; `docs/skills-protocol.md`; harness symlinks via script; security-review stub.
 
 ---
 
-### Fork #7 — Sub-agents and quality gates
+### Fork #7 — Sub-agents and quality gates ← **START HERE**
 
-- [firstmate](https://github.com/kunchenguid/firstmate) orchestration
-- When to delegate; keep crewmates on same gates
+**Goal:** When to delegate work; keep sub-agents on the same gates; firstmate orchestration.
+
+**Suggested topics:**
+
+- [firstmate](https://github.com/kunchenguid/firstmate) liaison + crewmates in worktrees
+- Each crewmate gets `AGENTS.md` + brief; same verify/analyze gates
+- Video demo stays single-agent unless showing parallel crew
+
+**Prompt for new session:**
+
+> Read `WORKFLOW.md` and `SESSION-HANDOFF.md`. We're on **Fork #7 — Sub-agents and quality gates**. Propose decisions, keep it succinct, update WORKFLOW.md when we agree.
+
+---
 
 ### Fork #8 — Optimizations
 
@@ -248,7 +258,7 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 3. ~~TDD + Zod~~ ✓
 4. ~~Find bugs, deal with them~~ ✓
 5. ~~Linters / fallow~~ ✓
-6. Skills inventory
+6. ~~Skills inventory~~ ✓
 7. Sub-agents
 8. Optimizations / ponytail
 9. Hooks

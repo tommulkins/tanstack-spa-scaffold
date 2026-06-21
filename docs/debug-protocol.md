@@ -12,7 +12,7 @@ Inspired by [Self-Testing AI Agents](https://stevekinney.com/courses/self-testin
 
 ## When to run
 
-- Any time `pnpm typecheck`, `pnpm lint`, or `pnpm test` exits non-zero
+- Any time `pnpm typecheck`, `pnpm lint`, `pnpm test`, or `pnpm analyze` exits non-zero
 - Before telling the human a task is complete (must be green first)
 
 ## Self-healing loop
@@ -34,7 +34,7 @@ run gate → capture evidence → hypothesize → fix → re-run
 When one gate was red, re-run that gate first, then the full suite:
 
 ```sh
-pnpm typecheck && pnpm lint && pnpm test
+pnpm typecheck && pnpm lint && pnpm test && pnpm analyze
 ```
 
 ## Failure dossier
