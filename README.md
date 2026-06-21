@@ -49,6 +49,7 @@ A task is not done until `typecheck`, `lint`, and `test` all exit zero.
 | `CONTEXT.md`               | Ubiquitous language glossary                                                                  |
 | `docs/kickoff-protocol.md` | Kickoff procedure                                                                             |
 | `docs/tdd-protocol.md`     | TDD at the Zod contract boundary                                                              |
+| `docs/debug-protocol.md`   | Self-heal when gates fail                                                                     |
 
 ## Kickoff
 

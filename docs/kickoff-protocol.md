@@ -82,4 +82,4 @@ git stash && git checkout main && sfw pnpm install && pnpm typecheck && pnpm lin
 
 Run all gates from the repo root. Task is not done until all exit zero.
 
-On failure, fix or produce structured evidence (dossiers — fork #12) before claiming done.
+On failure, follow [`docs/debug-protocol.md`](./debug-protocol.md) — dossier, self-heal loop (max 3 attempts), escalate when stuck. Do not claim done on red.

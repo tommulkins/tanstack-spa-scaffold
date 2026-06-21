@@ -4,7 +4,7 @@ Living document for a rigorous, agent-assisted workflow: **new project or featur
 
 Each forked discussion adds decisions here. Prefer succinct entries; link out for detail.
 
-> **New session?** Read [`SESSION-HANDOFF.md`](./SESSION-HANDOFF.md) first — current state, repos, and **Fork #4** pickup prompt.
+> **New session?** Read [`SESSION-HANDOFF.md`](./SESSION-HANDOFF.md) first — current state, repos, and **Fork #5** pickup prompt.
 
 ---
 
@@ -436,7 +436,7 @@ All items below were open across forks #1–#3; closed before starting fork #4.
 | firstmate               | Fork #7                                                                                                             |
 | Component / RTL tests   | Not in base template                                                                                                |
 | `@hono/zod-validator`   | Not in base template                                                                                                |
-| Failure dossiers        | Fork #4 + #12                                                                                                       |
+| Failure dossiers        | Fork #4 — `docs/debug-protocol.md`; fork #12 for e2e trace depth                                                    |
 | Skill harness symlinks  | Run `./scripts/link-agent-skills.sh` → `.cursor/skills` + `.claude/skills` → `.agents/skills`                       |
 | `ai-workflows` git repo | Optional meta repo later; `WORKFLOW.md` lives in scaffold for now                                                   |
 
@@ -444,11 +444,56 @@ All items below were open across forks #1–#3; closed before starting fork #4.
 
 ## Fork #4 — Find bugs, deal with them
 
-**Status:** Not started
+**Status:** Decided
 
-### Decisions
+### Decision
 
-_To be filled in this fork._
+When gates fail, agents run a **structured self-healing loop** with evidence — never claim done on red, never weaken tests to pass.
+
+```
+run gate → dossier → hypothesize → fix → re-run (max 3 per root error) → escalate
+```
+
+### Self-healing loop
+
+| Step       | Agent action                                                         |
+| ---------- | -------------------------------------------------------------------- |
+| 1. Run     | Execute failing gate from repo root (or named package)               |
+| 2. Capture | Full stdout/stderr; e2e spec name + trace path when present          |
+| 3. Dossier | Write `reports/dossiers/<date>-<slug>.md` from template (gitignored) |
+| 4. Fix     | Minimum change per `PLAN.md` + `AGENTS.md`                           |
+| 5. Re-run  | Same gate first, then full `typecheck && lint && test`               |
+
+**Retry budget:** 3 attempts per root error. New error after a fix → new thread. Same error after 3 tries → escalate.
+
+### Escalate to human when
+
+- Plan / product ambiguity or scope change needed
+- Architecture fork (ADR-level)
+- Environment / infra (`sfw`, Playwright browser, ports, permissions)
+- Flake (passes on immediate re-run without code change)
+- Agent cannot distinguish test bug vs product bug
+
+### Failure dossiers
+
+Structured markdown per [`docs/dossier-template.md`](./docs/dossier-template.md). Fields: gate, exit code, raw output, hypothesis, fix attempts, status (`open` | `resolved` | `escalated`). Session evidence — not committed unless human asks.
+
+Playwright: cite trace zip from `test-results/`; fork #12 adds deeper trace-reading conventions.
+
+### Agent files (scaffold)
+
+| File                                 | Role                               |
+| ------------------------------------ | ---------------------------------- |
+| `docs/debug-protocol.md`             | Canonical self-heal procedure      |
+| `docs/dossier-template.md`           | Copy-paste dossier shape           |
+| `.agents/skills/verify/SKILL.md`     | Discovery wrapper → debug protocol |
+| `AGENTS.md` § When gates fail        | Contract summary                   |
+| `docs/kickoff-protocol.md` § Phase 5 | Cross-link                         |
+
+### Open from fork #4
+
+- [ ] Playwright trace reading checklist — fork #12 (e2e conventions)
+- [ ] no-mistakes / AXI evidence pipeline — fork #11 (CI)
 
 ---
 
@@ -586,4 +631,5 @@ Ideas only — **do not copy code or config from these into `scaffold/`:**
 | 2026-06-21 | scaffold      | Initial greenfield repo pushed — `tommulkins/tanstack-spa-scaffold`                                        |
 | 2026-06-21 | #3            | Schema-first TDD; `docs/tdd-protocol.md` + `/tdd` skill; Notes reference slice in scaffold                 |
 | 2026-06-21 | #2 patch      | Split docs: `PLAN.md` for feature kickoff; `DESIGN.md` for visual identity (google-labs-code/design.md)    |
+| 2026-06-21 | #4            | Self-heal loop on red gates; dossiers; verify skill; escalate rules                                        |
 | 2026-06-21 | carry-forward | Closed open items from forks #1–#3; ADR 0001 tiered gates; skill symlinks; plan approval = PLAN.md         |

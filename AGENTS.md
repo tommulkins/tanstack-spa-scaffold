@@ -76,13 +76,26 @@ pnpm exec playwright test tests/e2e/notes.spec.ts
 
 Add or update tests for behavior you change.
 
+## When gates fail
+
+Follow [`docs/debug-protocol.md`](./docs/debug-protocol.md). **Do not claim done on red.**
+
+1. Re-run the failing gate; capture full output.
+2. Write a dossier from [`docs/dossier-template.md`](./docs/dossier-template.md) under `reports/dossiers/` (gitignored).
+3. Hypothesize → fix minimum change → re-run the same gate, then the full suite.
+4. Up to **3** fix attempts per root error; then **escalate** with dossier status `escalated`.
+
+**Escalate immediately** (do not spin): plan ambiguity, architecture fork, missing infra (Playwright browser, ports, `sfw`), or flake (passes on bare re-run without code change).
+
+Never weaken tests or assertions to green a gate.
+
 ## Before implementation
 
 Follow [`docs/kickoff-protocol.md`](./docs/kickoff-protocol.md). No feature code until `PLAN.md` § Plan has `approved: [x] yes`.
 
 When context compacts, re-read `AGENTS.md`, `PLAN.md`, and `CONTEXT.md`. For UI, also re-read `DESIGN.md`.
 
-Skills in [`.agents/skills/`](./.agents/skills/): **grill-with-docs** (kickoff), **tdd** (red-green at contracts).
+Skills in [`.agents/skills/`](./.agents/skills/): **grill-with-docs** (kickoff), **tdd** (red-green at contracts), **verify** (gates + self-heal on failure).
 
 ## Code style and conventions
 

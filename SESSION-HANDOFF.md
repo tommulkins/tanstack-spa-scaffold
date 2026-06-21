@@ -29,7 +29,7 @@ The agent runs the feedback loop; the human steers architecture and approves mer
 
 ---
 
-## Completed (Forks #1–#3 + scaffold)
+## Completed (Forks #1–#4 + scaffold)
 
 ### Stack (locked in)
 
@@ -86,6 +86,13 @@ pnpm exec playwright install chromium
 - `AGENTS.md` § TDD and Zod — Kinney rule, layer order, Zod conventions
 - **Notes reference slice:** schemas → `packages/api/src/app.ts` → `apps/web/src/lib/notes.ts` → `/notes` route → `tests/e2e/notes.spec.ts`
 
+### Fork #4 (Find bugs)
+
+- `docs/debug-protocol.md` — self-heal loop, retry budget, escalate rules
+- `docs/dossier-template.md` — failure evidence shape
+- `.agents/skills/verify/SKILL.md` — run gates + heal on red
+- `reports/dossiers/` — gitignored session evidence
+
 ### Doc naming (fork #2 patch)
 
 - **`PLAN.md`** — feature kickoff (goal, plan, verification, recovery)
@@ -104,7 +111,7 @@ pnpm exec playwright install chromium
 | Skill symlinks      | Run `./scripts/link-agent-skills.sh` after clone                                |
 | `ai-workflows` repo | Optional later; `WORKFLOW.md` in scaffold for now                               |
 
-No open carry-forward items — proceed to **Fork #4**.
+No open carry-forward items — proceed to **Fork #5**.
 
 ---
 
@@ -118,27 +125,27 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 
 ---
 
-### Fork #4 — Find bugs, deal with them ← **START HERE**
+### Fork #4 — Find bugs, deal with them ✓
 
-**Goal:** Define the agent self-healing loop when gates fail.
-
-**Suggested topics to decide:**
-
-- Agent self-healing loop when gates fail
-- Failure evidence / dossiers (Kinney course)
-- When human intervenes vs agent retries
-
-**Prompt for new session:**
-
-> Read `WORKFLOW.md` and `SESSION-HANDOFF.md`. We're on **Fork #4 — Find bugs, deal with them**. Propose decisions, keep it succinct, update WORKFLOW.md when we agree.
+**Decided:** Self-healing loop on red gates — dossier → hypothesize → fix → re-run (max 3 attempts) → escalate. Delivered: `docs/debug-protocol.md`, `docs/dossier-template.md`, `.agents/skills/verify/`, `AGENTS.md` § When gates fail.
 
 ---
 
-### Fork #5 — Linters, formatters, static analysis
+### Fork #5 — Linters, formatters, static analysis ← **START HERE**
+
+**Goal:** Tiered static analysis beyond ESLint/Prettier — fallow for complexity and dead code.
+
+**Suggested topics:**
 
 - Tool: [fallow](https://github.com/fallow-rs/fallow)
-- Cyclomatic complexity, dead code
-- Tiered gates: fast (pre-commit) vs slow (CI)
+- Cyclomatic complexity, dead code thresholds
+- Fast vs slow gate placement (extends ADR 0001)
+
+**Prompt for new session:**
+
+> Read `WORKFLOW.md` and `SESSION-HANDOFF.md`. We're on **Fork #5 — Linters, formatters, static analysis**. Propose decisions, keep it succinct, update WORKFLOW.md when we agree.
+
+---
 
 ### Fork #6 — Skills inventory
 
@@ -203,7 +210,7 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 1. ~~Template choice~~ ✓
 2. ~~Kickoff / grill-with-docs~~ ✓
 3. ~~TDD + Zod~~ ✓
-4. Find bugs, deal with them
+4. ~~Find bugs, deal with them~~ ✓
 5. Linters / fallow
 6. Skills inventory
 7. Sub-agents
