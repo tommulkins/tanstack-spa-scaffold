@@ -29,7 +29,7 @@ The agent runs the feedback loop; the human steers architecture and approves mer
 
 ---
 
-## Completed (Forks #1–#8 + scaffold)
+## Completed (Forks #1–#9 + scaffold)
 
 ### Stack (locked in)
 
@@ -125,7 +125,16 @@ pnpm exec playwright install chromium
 
 ---
 
-## Resolved (forks #1–#8)
+### Fork #9 (Hooks)
+
+- `docs/hooks-protocol.md`, ADR 0004 — ban `@ts-expect-error`, `eslint-disable`, etc.
+- `scripts/check-agent-suppressions.sh` + Lefthook `agent-policy`
+- `.cursor/hooks.json` — `preToolUse` deny on suppressions
+- `pnpm test:agent-policy` — checker self-test
+
+---
+
+## Resolved (forks #1–#9)
 
 | Topic               | Decision                                                                        |
 | ------------------- | ------------------------------------------------------------------------------- |
@@ -136,7 +145,7 @@ pnpm exec playwright install chromium
 | Skill symlinks      | Run `./scripts/link-agent-skills.sh` after clone                                |
 | `ai-workflows` repo | Optional later; `WORKFLOW.md` in scaffold for now                               |
 
-No open carry-forward items — proceed to **Fork #9**.
+No open carry-forward items — proceed to **Fork #10**.
 
 ---
 
@@ -190,20 +199,21 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 
 ---
 
-### Fork #9 — Hooks (prevent agent false-positives) ← **START HERE**
+### Fork #9 — Hooks ✓
 
-**Goal:** Cursor hooks, lefthook extensions — block `@ts-expect-error`, `eslint-disable`, etc.
-
-**Prompt for new session:**
-
-> Read `WORKFLOW.md` and `SESSION-HANDOFF.md`. We're on **Fork #9 — Hooks**. Propose decisions, keep it succinct, update WORKFLOW.md when we agree.
+**Decided:** Mechanical ban on suppressions; lefthook agent-policy; Cursor preToolUse; ADR 0004.
 
 ---
 
-### Fork #10 — MCPs
+### Fork #10 — MCPs ← **START HERE**
 
-- Custom verification MCPs; AXI-style CLI output
-- [axi.md](https://axi.md/), TOON for token savings
+**Goal:** Custom verification MCPs; AXI-style CLI output; TOON for token savings.
+
+**Prompt for new session:**
+
+> Read `WORKFLOW.md` and `SESSION-HANDOFF.md`. We're on **Fork #10 — MCPs**. Propose decisions, keep it succinct, update WORKFLOW.md when we agree.
+
+---
 
 ### Fork #11 — CI/CD
 
@@ -276,7 +286,7 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 6. ~~Skills inventory~~ ✓
 7. ~~Sub-agents~~ ✓
 8. ~~Optimizations / ponytail~~ ✓
-9. Hooks
+9. ~~Hooks~~ ✓
 10. MCPs
 11. CI/CD
 12. E2E + Vitest conventions

@@ -14,6 +14,7 @@
     "test:unit": "pnpm -r test:unit",
     "test": "node scripts/run-e2e.mjs",
     "test:all": "pnpm test:unit && pnpm test",
+    "test:agent-policy": "bash scripts/check-agent-suppressions.test.sh",
     "prepare": "lefthook install"
   },
   "devDependencies": {

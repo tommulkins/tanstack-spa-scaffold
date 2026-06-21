@@ -124,7 +124,7 @@ Default: **one agent, one session** (grill → tdd → verify). For parallel tas
 - Zod schemas in `packages/schemas` are the single source of truth — export schemas and `z.infer` types; no duplicate boundary types.
 - API: parse request bodies and outbound JSON with shared schemas.
 - Web: parse API responses; validate forms with the same request schemas the API uses.
-- Do not silence types with `any` or `@ts-expect-error`. Do not add `eslint-disable` — fix the code.
+- Do not silence types with `any` or `@ts-expect-error`. Do not add `eslint-disable` — fix the code. Enforced: [`docs/hooks-protocol.md`](./docs/hooks-protocol.md), Lefthook `agent-policy`, Cursor `preToolUse` hook ([ADR 0004](./docs/adr/0004-no-agent-suppressions.md)).
 - Do not put implementation details in `CONTEXT.md` (glossary only).
 - Do not add server functions to the web app — API lives in `packages/api`.
 
@@ -133,7 +133,7 @@ Reference slice: Notes (`packages/schemas/src/note.ts` → API → `apps/web/src
 ## PR instructions
 
 - Run the **full gate** before opening or updating a PR: `pnpm typecheck`, `pnpm lint`, `pnpm test`, and `pnpm analyze`.
-- Pre-commit (Lefthook) runs **fast gates only** (`typecheck` + `lint`) — see [ADR 0001](./docs/adr/0001-tiered-quality-gates.md) and [ADR 0002](./docs/adr/0002-static-analysis-tier.md). E2e and fallow are not in the hook; run `pnpm test` and `pnpm analyze` explicitly.
+- Pre-commit (Lefthook) runs **fast gates only** (`typecheck` + `lint` + **agent-policy**) — see [ADR 0001](./docs/adr/0001-tiered-quality-gates.md), [ADR 0002](./docs/adr/0002-static-analysis-tier.md), and [ADR 0004](./docs/adr/0004-no-agent-suppressions.md). E2e and fallow are not in the hook; run `pnpm test` and `pnpm analyze` explicitly.
 - Flag new dependencies in the PR/summary; install only via `sfw pnpm`.
 - Only create commits or PRs when the human asks.
 

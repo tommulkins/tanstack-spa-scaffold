@@ -4,7 +4,7 @@ Living document for a rigorous, agent-assisted workflow: **new project or featur
 
 Each forked discussion adds decisions here. Prefer succinct entries; link out for detail.
 
-> **New session?** Read [`SESSION-HANDOFF.md`](./SESSION-HANDOFF.md) first — current state, repos, and **Fork #9** pickup prompt.
+> **New session?** Read [`SESSION-HANDOFF.md`](./SESSION-HANDOFF.md) first — current state, repos, and **Fork #10** pickup prompt.
 
 ---
 
@@ -707,11 +707,34 @@ Already in `AGENTS.md`: smallest correct diff, schema-first TDD, full gate befor
 
 ## Fork #9 — Hooks (prevent agent false-positives)
 
-**Status:** Not started
+**Status:** Decided
 
-### Decisions
+### Decision
 
-_To be filled in this fork._
+**Mechanical ban on TypeScript/ESLint suppressions** — agents cannot `@ts-expect-error` or `eslint-disable` their way to green.
+
+### Enforcement
+
+| Layer      | Mechanism                                                                |
+| ---------- | ------------------------------------------------------------------------ |
+| Cursor IDE | `.cursor/hooks.json` → `preToolUse` denies suppressions in writes        |
+| Pre-commit | Lefthook `agent-policy` → `scripts/check-agent-suppressions.sh --staged` |
+| ESLint     | `@typescript-eslint/no-explicit-any` (existing)                          |
+| Allowlist  | `routeTree.gen.ts` only                                                  |
+
+### Agent files (scaffold)
+
+| File                                     | Purpose                          |
+| ---------------------------------------- | -------------------------------- |
+| `docs/hooks-protocol.md`                 | Banned patterns, tiers, commands |
+| `docs/adr/0004-no-agent-suppressions.md` | Decision record                  |
+| `scripts/check-agent-suppressions.sh`    | Grep checker                     |
+| `.cursor/hooks/`                         | Cursor project hooks             |
+
+### Open from fork #9
+
+- [ ] `beforeShellExecution` deny `git commit --no-verify` — optional hardening
+- [ ] `.env` / secret scan in pre-commit — fork #13
 
 ---
 
@@ -968,6 +991,7 @@ Ideas only — **do not copy code or config from these into `scaffold/`:**
 | 2026-06-21 | scaffold      | Align `AGENTS.md` with agents.md — dev/test/PR sections; nested package AGENTS.md                          |
 | 2026-06-21 | #5            | fallow static analysis; ADR 0002; `pnpm analyze` in full gate; analyze skill                               |
 | 2026-06-21 | #6            | Skills inventory; `docs/skills-protocol.md`; security-review stub; fix skill protocol links                |
+| 2026-06-21 | #9            | Agent suppression hooks; ADR 0004; lefthook agent-policy; Cursor preToolUse block                          |
 | 2026-06-21 | #8            | Context protocol; re-read ladder; optional ponytail; compaction recovery                                   |
 | 2026-06-21 | #7            | Sub-agents protocol; ADR 0003 same gates; orchestrate skill; firstmate no-mistakes registration            |
 | 2026-06-21 | #13 plan      | Security review fork — diff review, supply chain, slow gate before CI                                      |

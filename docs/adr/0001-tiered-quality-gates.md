@@ -12,11 +12,11 @@ Pre-commit hooks that run full Playwright e2e are slow and flaky on laptops. Age
 
 **Three tiers:**
 
-| Tier     | When                     | Commands                                                             |
-| -------- | ------------------------ | -------------------------------------------------------------------- |
-| **Fast** | Lefthook pre-commit      | `pnpm typecheck`, `pnpm lint`                                        |
-| **Full** | Before merge / task done | `pnpm typecheck`, `pnpm lint`, `pnpm test`, `pnpm analyze`           |
-| **CI**   | Pull request (fork #11)  | Full suite + fallow baselines + `sfw pnpm install --frozen-lockfile` |
+| Tier     | When                     | Commands                                                                                                    |
+| -------- | ------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| **Fast** | Lefthook pre-commit      | `pnpm typecheck`, `pnpm lint`, agent-policy (no suppressions — [ADR 0004](./0004-no-agent-suppressions.md)) |
+| **Full** | Before merge / task done | `pnpm typecheck`, `pnpm lint`, `pnpm test`, `pnpm analyze`                                                  |
+| **CI**   | Pull request (fork #11)  | Full suite + fallow baselines + `sfw pnpm install --frozen-lockfile`                                        |
 
 E2e and fallow audit do not run in pre-commit. Agents must run `pnpm test` and `pnpm analyze` explicitly before claiming done. See [ADR 0002](./0002-static-analysis-tier.md).
 

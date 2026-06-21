@@ -93,7 +93,7 @@ Do not duplicate ponytail's full ruleset in `AGENTS.md`. Link here; adopt upstre
 | Topic                                                | Fork     |
 | ---------------------------------------------------- | -------- |
 | TOON / AXI structured CLI output                     | #10 MCPs |
-| Hooks blocking `eslint-disable` / `@ts-expect-error` | #9       |
+| Hooks blocking `eslint-disable` / `@ts-expect-error` | #9 ✓     |
 | CI artifact retention                                | #11      |
 
 ## Related
