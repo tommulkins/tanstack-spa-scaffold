@@ -23,6 +23,7 @@ cp .env.example .env
 sfw pnpm install
 pnpm exec playwright install chromium
 ./scripts/link-agent-skills.sh   # optional: Cursor / Claude Code skill discovery
+# Optional MCP: copy docs/mcp.example.json → .cursor/mcp.json (see docs/mcp-protocol.md)
 ```
 
 ## Scripts
@@ -56,6 +57,7 @@ A task is not done until `typecheck`, `lint`, `test`, and `analyze` all exit zer
 | `docs/subagents-protocol.md`       | When to delegate; crewmate contract; firstmate registration                                   |
 | `docs/context-protocol.md`         | Compaction recovery; re-read ladder; optional ponytail                                        |
 | `docs/hooks-protocol.md`           | Ban agent suppressions; Lefthook + Cursor hooks                                               |
+| `docs/mcp-protocol.md`             | Optional MCP / AXI; shell gates canonical                                                     |
 | `docs/security-protocol.md`        | Security review stub (fork #13)                                                               |
 | `WORKFLOW.md` § Fork #12           | Planned: acceptance scenarios, anti-lazy e2e rules (not implemented yet)                      |
 | `WORKFLOW.md` § Fork #13           | Planned: full security review protocol (stub skill exists from fork #6)                       |

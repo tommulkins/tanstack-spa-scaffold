@@ -82,4 +82,4 @@ Do not vendor harness-specific copies. Do not put implementation detail in skill
 
 ## fallow bundled skills
 
-Installing `fallow` adds its own skill under `node_modules`. Project skills in `.agents/skills/` take precedence for **this workflow**; use fallow MCP/LSP for deep codebase inspection when needed.
+Installing `fallow` adds its own skill and MCP under `node_modules`. Project skills in `.agents/skills/` take precedence for **this workflow**; use fallow MCP for deep inspection when triaging beyond `pnpm analyze` — see [`mcp-protocol.md`](./mcp-protocol.md).

@@ -29,7 +29,7 @@ The agent runs the feedback loop; the human steers architecture and approves mer
 
 ---
 
-## Completed (Forks #1–#9 + scaffold)
+## Completed (Forks #1–#10 + scaffold)
 
 ### Stack (locked in)
 
@@ -121,7 +121,7 @@ pnpm exec playwright install chromium
 
 - `docs/context-protocol.md` — re-read ladder, compaction recovery, token habits
 - ponytail optional (harness plugin, not vendored); baseline minimal-code rules stay in `AGENTS.md`
-- TOON/AXI deferred to fork #10
+- TOON/AXI — [`docs/mcp-protocol.md`](./docs/mcp-protocol.md) (fork #10 ✓)
 
 ---
 
@@ -134,7 +134,15 @@ pnpm exec playwright install chromium
 
 ---
 
-## Resolved (forks #1–#9)
+### Fork #10 (MCPs)
+
+- `docs/mcp-protocol.md`, ADR 0005 — shell gates canonical; MCP optional
+- `docs/mcp.example.json` — optional Cursor MCP template (context7)
+- AXI/TOON guidance; gh-axi / browser AXI deferred to fork #11
+
+---
+
+## Resolved (forks #1–#10)
 
 | Topic               | Decision                                                                        |
 | ------------------- | ------------------------------------------------------------------------------- |
@@ -145,7 +153,7 @@ pnpm exec playwright install chromium
 | Skill symlinks      | Run `./scripts/link-agent-skills.sh` after clone                                |
 | `ai-workflows` repo | Optional later; `WORKFLOW.md` in scaffold for now                               |
 
-No open carry-forward items — proceed to **Fork #10**.
+No open carry-forward items — proceed to **Fork #11**.
 
 ---
 
@@ -205,21 +213,21 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 
 ---
 
-### Fork #10 — MCPs ← **START HERE**
+### Fork #10 — MCPs ✓
 
-**Goal:** Custom verification MCPs; AXI-style CLI output; TOON for token savings.
-
-**Prompt for new session:**
-
-> Read `WORKFLOW.md` and `SESSION-HANDOFF.md`. We're on **Fork #10 — MCPs**. Propose decisions, keep it succinct, update WORKFLOW.md when we agree.
+**Decided:** Shell gates canonical; MCP optional for docs/debug/triage; AXI preferred over heavy MCP; mcp.example.json.
 
 ---
 
-### Fork #11 — CI/CD
+### Fork #11 — CI/CD ← **START HERE**
 
-- GitHub Actions; `sfw pnpm install --frozen-lockfile`
-- [no-mistakes](https://github.com/kunchenguid/no-mistakes) pipeline
-- Deploy preview probes
+**Goal:** GitHub Actions; `sfw pnpm install --frozen-lockfile`; no-mistakes pipeline; deploy preview probes.
+
+**Prompt for new session:**
+
+> Read `WORKFLOW.md` and `SESSION-HANDOFF.md`. We're on **Fork #11 — CI/CD**. Propose decisions, keep it succinct, update WORKFLOW.md when we agree.
+
+---
 
 ### Fork #12 — E2E, unit tests, and acceptance rigor
 
@@ -287,7 +295,7 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 7. ~~Sub-agents~~ ✓
 8. ~~Optimizations / ponytail~~ ✓
 9. ~~Hooks~~ ✓
-10. MCPs
+10. ~~MCPs~~ ✓
 11. CI/CD
 12. E2E + Vitest conventions
 13. Security review

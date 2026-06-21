@@ -4,7 +4,7 @@ Living document for a rigorous, agent-assisted workflow: **new project or featur
 
 Each forked discussion adds decisions here. Prefer succinct entries; link out for detail.
 
-> **New session?** Read [`SESSION-HANDOFF.md`](./SESSION-HANDOFF.md) first — current state, repos, and **Fork #10** pickup prompt.
+> **New session?** Read [`SESSION-HANDOFF.md`](./SESSION-HANDOFF.md) first — current state, repos, and **Fork #11** pickup prompt.
 
 ---
 
@@ -350,7 +350,7 @@ For the video demo: **single-agent direct model** unless showing parallel crew i
 
 ### Tooling interfaces (AXI)
 
-Prefer [AXI](https://axi.md/)-style CLIs for agent-facing tools (GitHub, browser, DB): token-efficient TOON output, structured errors, contextual next-step hints. Relevant when wiring MCPs/CLIs in forks #10–#11 — not required at kickoff.
+Prefer [AXI](https://axi.md/)-style CLIs for agent-facing tools (GitHub, browser, DB): token-efficient TOON output, structured errors, contextual next-step hints. Canonical rules: [`docs/mcp-protocol.md`](./docs/mcp-protocol.md) (fork #10). CI wiring: fork #11.
 
 ### Clean delivery
 
@@ -740,11 +740,38 @@ Already in `AGENTS.md`: smallest correct diff, schema-first TDD, full gate befor
 
 ## Fork #10 — MCPs
 
-**Status:** Not started
+**Status:** Decided
 
-### Decisions
+### Decision
 
-_To be filled in this fork._
+**Shell gates canonical; MCP optional.** Document when to use MCP vs AXI CLIs vs `pnpm` scripts. No MCP required for done; no MCP servers vendored into the monorepo.
+
+### Layer model
+
+| Layer    | Mechanism                                                                   |
+| -------- | --------------------------------------------------------------------------- |
+| Done     | `typecheck` + `lint` + `test` + `analyze`                                   |
+| Optional | context7 (docs), browser MCP (e2e debug), fallow MCP (triage)               |
+| Prefer   | AXI CLIs (gh-axi, chrome-devtools-axi) over schema-heavy MCP when available |
+| CI       | Shell only — fork #11                                                       |
+
+### TOON / AXI
+
+Agent-facing tools should use TOON or compact JSON, minimal default fields, structured errors, and next-step hints ([axi.md](https://axi.md/)). fallow gate JSON stays as-is for automation.
+
+### Agent files (scaffold)
+
+| File                                         | Purpose                      |
+| -------------------------------------------- | ---------------------------- |
+| `docs/mcp-protocol.md`                       | When to use MCP, AXI, shell  |
+| `docs/mcp.example.json`                      | Optional Cursor MCP template |
+| `docs/adr/0005-mcp-optional-augmentation.md` | Decision record              |
+| `AGENTS.md` § MCP                            | Summary pointer              |
+
+### Open from fork #10
+
+- [ ] Wire gh-axi in fork #11 CI evidence
+- [ ] Custom verification MCP (deploy probe) — product-specific, not scaffold base
 
 ---
 
@@ -948,7 +975,7 @@ Hooks (#9), MCPs (#10), sub-agents (#7) wire in as adopted.
 
 ### Token efficiency
 
-Repo files (`AGENTS.md`, `PLAN.md`, protocols) are durable memory; chat is not. Re-read ladder: [`docs/context-protocol.md`](./docs/context-protocol.md). Optional implement-phase plugin: [ponytail](https://github.com/DietrichGebert/ponytail). Structured CLI I/O (TOON): fork #10.
+Repo files (`AGENTS.md`, `PLAN.md`, protocols) are durable memory; chat is not. Re-read ladder: [`docs/context-protocol.md`](./docs/context-protocol.md). Optional implement-phase plugin: [ponytail](https://github.com/DietrichGebert/ponytail). MCP / AXI: [`docs/mcp-protocol.md`](./docs/mcp-protocol.md).
 
 ### Git workflow
 
@@ -991,6 +1018,7 @@ Ideas only — **do not copy code or config from these into `scaffold/`:**
 | 2026-06-21 | scaffold      | Align `AGENTS.md` with agents.md — dev/test/PR sections; nested package AGENTS.md                          |
 | 2026-06-21 | #5            | fallow static analysis; ADR 0002; `pnpm analyze` in full gate; analyze skill                               |
 | 2026-06-21 | #6            | Skills inventory; `docs/skills-protocol.md`; security-review stub; fix skill protocol links                |
+| 2026-06-21 | #10           | MCP protocol; ADR 0005 shell gates canonical; mcp.example.json; AXI/TOON guidance                          |
 | 2026-06-21 | #9            | Agent suppression hooks; ADR 0004; lefthook agent-policy; Cursor preToolUse block                          |
 | 2026-06-21 | #8            | Context protocol; re-read ladder; optional ponytail; compaction recovery                                   |
 | 2026-06-21 | #7            | Sub-agents protocol; ADR 0003 same gates; orchestrate skill; firstmate no-mistakes registration            |

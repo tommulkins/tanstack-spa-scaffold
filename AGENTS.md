@@ -119,6 +119,10 @@ Protocols are canonical; skills are pointers only.
 
 Default: **one agent, one session** (grill → tdd → verify). For parallel tasks or broad exploration, follow [`docs/subagents-protocol.md`](./docs/subagents-protocol.md). Every delegate runs the **same full gate** before reporting done ([ADR 0003](./docs/adr/0003-subagent-gates.md)). Brief template: [`docs/crewmate-brief-template.md`](./docs/crewmate-brief-template.md).
 
+## MCP and external tools
+
+Shell gates are canonical ([ADR 0005](./docs/adr/0005-mcp-optional-augmentation.md)). Optional MCP / AXI for docs, browser debug, and triage: [`docs/mcp-protocol.md`](./docs/mcp-protocol.md). Example harness config: [`docs/mcp.example.json`](./docs/mcp.example.json). Do not claim done from MCP observation alone.
+
 ## Code style and conventions
 
 - Zod schemas in `packages/schemas` are the single source of truth — export schemas and `z.infer` types; no duplicate boundary types.
