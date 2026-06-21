@@ -38,6 +38,16 @@ approved: [ ] yes
 
 <!-- commands + named tests that must pass -->
 
+## Acceptance scenarios
+
+<!-- Gherkin-style scenarios — human-approved before implement (fork #12). See WORKFLOW.md § Fork #12. -->
+
+<!--
+Example:
+- [ ] **Happy:** Given I am on /notes, when I add "Buy milk", then it appears in the list
+- [ ] **Reject:** Given whitespace-only input, when I submit, then I see validation error and no item is created
+-->
+
 ## Recovery
 
 ```sh

@@ -311,6 +311,15 @@ approved: [ ] yes
 
 <!-- commands + named tests that must pass -->
 
+## Acceptance scenarios
+
+<!-- Gherkin-style — approve before implement. Min: 1 happy + 1 failure path per feature. -->
+
+<!--
+- [ ] **Happy:** Given …, when …, then …
+- [ ] **Reject:** Given …, when …, then …
+-->
+
 ## Recovery
 
 <!-- exact commands to return to last green state -->
@@ -492,7 +501,7 @@ Playwright: cite trace zip from `test-results/`; fork #12 adds deeper trace-read
 
 ### Open from fork #4
 
-- [ ] Playwright trace reading checklist — fork #12 (e2e conventions)
+- [ ] Playwright trace reading checklist — fork #12 (`docs/e2e-protocol.md`)
 - [ ] no-mistakes / AXI evidence pipeline — fork #11 (CI)
 
 ---
@@ -577,15 +586,97 @@ _To be filled in this fork._
 
 ---
 
-## Fork #12 — E2E and unit tests
+## Fork #12 — E2E, unit tests, and acceptance rigor
 
-**Status:** Not started
+**Status:** Planned (not started)
 
-Playwright + Vitest conventions, dossiers, failure evidence for agents.
+**Goal:** Stop agents from “going green” with shallow tests — rigorous, human-approved acceptance scenarios plus executable coverage at every layer.
 
-### Decisions
+Builds on fork #3 (TDD pyramid), fork #4 (dossiers / no weakening assertions), and fork #5+ gates.
 
-_To be filled in this fork._
+### Problem
+
+Today the scaffold requires **one happy-path e2e per feature**. Schema/API layers carry rejection tests; e2e is the weakest anti-lazy layer. Gherkin syntax alone does not fix lazy scenarios — **who writes scenarios and when** does.
+
+### Planned decisions
+
+#### 1. Acceptance scenarios in `PLAN.md` (required before implement)
+
+Add § **Acceptance scenarios** to the kickoff template (Gherkin-_like_ bullets, no Cucumber required):
+
+```markdown
+## Acceptance scenarios
+
+- [ ] **Happy:** Given …, when …, then …
+- [ ] **Reject:** Given invalid input, when …, then … (no side effect / error shown)
+```
+
+- Listed in Phase 3; approved with `PLAN.md` § Plan checkbox
+- § Verification links each scenario to a **named test** (Vitest `-t` pattern or Playwright spec)
+- Agent must not drop or weaken scenarios during implement without plan amendment
+
+#### 2. Mandatory scenario mix per feature
+
+| Layer       | Minimum                              | Example                            |
+| ----------- | ------------------------------------ | ---------------------------------- |
+| Schemas     | valid + invalid cases                | `it.each` reject table             |
+| API         | happy + 400/error body               | whitespace POST → 400              |
+| Web helpers | parse fail before fetch              | invalid input never calls `fetch`  |
+| E2e         | **1 happy + 1 user-visible failure** | validation error; no spurious POST |
+
+Replace tdd-protocol “one happy path e2e” with this rule when fork #12 lands.
+
+#### 3. Executable Gherkin (optional scaffold default)
+
+Evaluate **playwright-bdd** or `@cucumber/playwright`:
+
+- `.feature` files committed at kickoff (or generated from approved `PLAN.md` scenarios)
+- Step definitions stay thin — reuse schema asserts and `apps/web/src/lib/` helpers
+- Vitest remains the fast contract layer; Cucumber does **not** replace schema/API tests
+
+**Default recommendation:** Gherkin-style `PLAN.md` scenarios for all projects; executable `.feature` files when the team wants reviewable specs in repo or for the video demo.
+
+#### 4. Anti-lazy test rules (agent contract)
+
+Document in `AGENTS.md` + `docs/e2e-protocol.md` (new):
+
+- No scenario that only asserts “page loads”
+- E2e must assert **outcome** (DOM, network, or error), not presence of a container
+- No weakening assertions to match broken UI (already in debug protocol — restate for e2e)
+- Failed submit: assert no successful mutation request when validation should block
+- Playwright trace reading checklist (extends fork #4 dossiers)
+
+#### 5. Reference slice updates
+
+Extend Notes demo:
+
+- E2e: whitespace-only note → inline error, list unchanged, no 201 POST
+- Optional: `tests/e2e/notes.feature` if executable Gherkin is adopted
+- `PLAN.md` example feature plan with filled acceptance scenarios
+
+#### 6. Deliverables (fork #12 session)
+
+| Artifact                                     | Purpose                                         |
+| -------------------------------------------- | ----------------------------------------------- |
+| `docs/e2e-protocol.md`                       | E2e + acceptance scenario rules                 |
+| `PLAN.md` + kickoff template                 | § Acceptance scenarios (stub exists)            |
+| `docs/tdd-protocol.md`                       | Update e2e minimums                             |
+| `AGENTS.md`                                  | Anti-lazy e2e bullets                           |
+| `.agents/skills/acceptance/` or extend `tdd` | Pointer to e2e protocol                         |
+| Notes feature                                | Second e2e failure path (+ optional `.feature`) |
+| `WORKFLOW.md` § Fork #12                     | Mark decided                                    |
+
+### Explicitly not in fork #12
+
+- Replacing Vitest schema tests with Cucumber
+- Component/RTL tests (closed in fork #3 — stay out of base template)
+- Mutation testing (consider with fallow in fork #5)
+
+### Open until fork #12
+
+- [ ] playwright-bdd vs plain Playwright + PLAN scenarios only
+- [ ] `.feature` files in repo vs PLAN.md as single source of truth
+- [ ] Trace-reading checklist depth (Kinney / Self-Testing AI Agents)
 
 ---
 
@@ -631,5 +722,5 @@ Ideas only — **do not copy code or config from these into `scaffold/`:**
 | 2026-06-21 | scaffold      | Initial greenfield repo pushed — `tommulkins/tanstack-spa-scaffold`                                        |
 | 2026-06-21 | #3            | Schema-first TDD; `docs/tdd-protocol.md` + `/tdd` skill; Notes reference slice in scaffold                 |
 | 2026-06-21 | #2 patch      | Split docs: `PLAN.md` for feature kickoff; `DESIGN.md` for visual identity (google-labs-code/design.md)    |
-| 2026-06-21 | #4            | Self-heal loop on red gates; dossiers; verify skill; escalate rules                                        |
+| 2026-06-21 | #12 plan      | Acceptance scenarios + anti-lazy e2e; PLAN.md § scenarios; fork #12 deliverables documented                |
 | 2026-06-21 | carry-forward | Closed open items from forks #1–#3; ADR 0001 tiered gates; skill symlinks; plan approval = PLAN.md         |

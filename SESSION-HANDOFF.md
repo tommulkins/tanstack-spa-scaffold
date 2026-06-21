@@ -100,7 +100,7 @@ pnpm exec playwright install chromium
 
 ---
 
-## Resolved (forks #1–#3)
+## Resolved (forks #1–#4)
 
 | Topic               | Decision                                                                        |
 | ------------------- | ------------------------------------------------------------------------------- |
@@ -177,10 +177,21 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 - [no-mistakes](https://github.com/kunchenguid/no-mistakes) pipeline
 - Deploy preview probes
 
-### Fork #12 — E2E and unit tests
+### Fork #12 — E2E, unit tests, and acceptance rigor
 
-- Playwright conventions, dossiers, trace reading
-- [Self-Testing AI Agents](https://stevekinney.com/courses/self-testing-ai-agents) patterns
+**Goal:** Rigorous acceptance scenarios so agents cannot greenwash with trivial tests.
+
+**Planned (see `WORKFLOW.md` § Fork #12):**
+
+- § **Acceptance scenarios** in `PLAN.md` — Gherkin-style bullets, human-approved before code
+- Mandatory mix: schema/API rejects + **e2e happy + e2e failure path** per feature
+- Optional executable `.feature` (playwright-bdd); Vitest stays the contract layer
+- `docs/e2e-protocol.md`, anti-lazy rules, Notes failure-path e2e
+- Playwright trace checklist (extends fork #4 dossiers)
+
+**Prompt for fork #12 session:**
+
+> Read `WORKFLOW.md` § Fork #12 and `SESSION-HANDOFF.md`. Implement acceptance rigor — PLAN scenarios, e2e protocol, Notes reject e2e, update WORKFLOW when decided.
 
 ---
 

@@ -50,6 +50,7 @@ A task is not done until `typecheck`, `lint`, and `test` all exit zero.
 | `docs/kickoff-protocol.md` | Kickoff procedure                                                                             |
 | `docs/tdd-protocol.md`     | TDD at the Zod contract boundary                                                              |
 | `docs/debug-protocol.md`   | Self-heal when gates fail                                                                     |
+| `WORKFLOW.md` § Fork #12   | Planned: acceptance scenarios, anti-lazy e2e rules (not implemented yet)                      |
 
 ## Kickoff
 

@@ -62,6 +62,7 @@ Add § Verification:
 
 - Root commands: `pnpm typecheck`, `pnpm lint`, `pnpm test`
 - Named unit and e2e tests
+- **Acceptance scenarios** (Gherkin-style bullets in § Acceptance scenarios) — at least one happy path and one failure path per feature; human approves before implement (full rules: fork #12 in `WORKFLOW.md`)
 
 Add § Recovery (minimum):
 

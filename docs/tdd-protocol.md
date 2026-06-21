@@ -67,7 +67,11 @@ Keep request and response schemas separate when shapes differ.
 
 ## E2E conventions
 
-Follow `AGENTS.md` Playwright locator rules. One spec per feature slice; extend smoke only for repo-wide regressions.
+Follow `AGENTS.md` Playwright locator rules.
+
+**Current (until fork #12):** one happy-path e2e per user-visible feature.
+
+**Fork #12 (planned):** min **1 happy + 1 failure-path** e2e per feature; scenarios approved in `PLAN.md` § Acceptance scenarios before implement. See `WORKFLOW.md` § Fork #12.
 
 ## Reference slice
 
