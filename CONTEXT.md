@@ -15,3 +15,7 @@ _Avoid_: backend server (too vague), server functions
 **Contract**:
 A Zod schema in `packages/schemas` shared by web and API.
 _Avoid_: DTO, interface (when meaning a runtime-validated boundary)
+
+**Note**:
+A short text entry created via the Notes reference slice; validated by shared Zod schemas end-to-end.
+_Avoid_: todo, message (when meaning this demo entity)

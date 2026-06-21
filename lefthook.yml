@@ -1,4 +1,5 @@
 pre-commit:
+  # Tiered gates — ADR 0001: fast checks only; full pnpm test before merge (not here)
   parallel: true
   commands:
     typecheck:

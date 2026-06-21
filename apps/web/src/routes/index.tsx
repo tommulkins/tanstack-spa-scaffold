@@ -1,6 +1,6 @@
 import { healthResponseSchema } from '@scaffold/schemas';
 import { useQuery } from '@tanstack/react-query';
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 
 async function fetchHealth() {
   const response = await fetch('/api/health');
@@ -33,6 +33,14 @@ function HomePage() {
         API status: {health.isLoading && 'checking…'}
         {health.isError && 'unavailable'}
         {health.isSuccess && health.data.status}
+      </p>
+      <p>
+        <Link
+          to="/notes"
+          className="text-sm text-slate-200 underline-offset-4 hover:underline"
+        >
+          View notes (TDD reference slice)
+        </Link>
       </p>
     </section>
   );

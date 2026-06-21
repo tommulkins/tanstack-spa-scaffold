@@ -11,7 +11,7 @@ Inspired by [grill-with-docs](https://www.aihero.dev/grill-with-docs) and [mattp
 
 ## Gate
 
-**Do not write feature code** until `DESIGN.md` § Plan has `approved: [x] yes` and verification tests are named.
+**Do not write feature code** until `PLAN.md` § Plan has `approved: [x] yes` and verification tests are named.
 
 ## Phase 1 — Grill
 
@@ -27,7 +27,7 @@ Resolve before moving on:
 6. Definition of done (named tests or observable behavior)
 7. Recovery if the session breaks
 
-Write answers into `DESIGN.md` (Goal, Non-goals, Constraints, Anti-patterns).
+Write answers into `PLAN.md` (Goal, Non-goals, Constraints, Anti-patterns).
 
 If the question is answerable from the repo, explore the codebase instead of asking.
 
@@ -35,7 +35,7 @@ If the question is answerable from the repo, explore the codebase instead of ask
 
 Propose one or two approaches. Document tradeoffs.
 
-Update `DESIGN.md` § Architecture and § Rejected alternatives.
+Update `PLAN.md` § Architecture and § Rejected alternatives.
 
 ### Domain language (`CONTEXT.md`)
 
@@ -56,7 +56,7 @@ Otherwise skip.
 
 ## Phase 3 — Make plan
 
-Produce ordered tasks in `DESIGN.md` § Plan.
+Produce ordered tasks in `PLAN.md` § Plan.
 
 Add § Verification:
 
@@ -69,11 +69,12 @@ Add § Recovery (minimum):
 git stash && git checkout main && sfw pnpm install && pnpm typecheck && pnpm lint && pnpm test
 ```
 
-**Stop.** Wait for human approval. Set `approved: [x] yes` in § Plan only after explicit go-ahead.
+**Stop.** Wait for human approval. Set `approved: [x] yes` in § Plan only after explicit go-ahead. This checkbox is the canonical gate — optional GitHub issues for team tracking do not replace it.
 
 ## Phase 4 — Implement
 
-- Red-green against § Verification
+- Red-green against § Verification — follow [`docs/tdd-protocol.md`](./tdd-protocol.md)
+- Order: schemas → API → web helpers → UI → e2e when the feature crosses layers
 - Follow `AGENTS.md`
 - Update `CONTEXT.md` / ADRs if new terms or surprising decisions emerge
 

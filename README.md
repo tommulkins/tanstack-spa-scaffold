@@ -22,6 +22,7 @@ Part of the [ai-workflows](https://github.com/tommulkins/ai-workflows) decision 
 cp .env.example .env
 sfw pnpm install
 pnpm exec playwright install chromium
+./scripts/link-agent-skills.sh   # optional: Cursor / Claude Code skill discovery
 ```
 
 ## Scripts
@@ -39,13 +40,15 @@ A task is not done until `typecheck`, `lint`, and `test` all exit zero.
 
 ## Agent files
 
-| File                       | Role                                  |
-| -------------------------- | ------------------------------------- |
-| `AGENTS.md`                | Canonical agent contract              |
-| `CLAUDE.md`                | Symlink → `AGENTS.md`                 |
-| `DESIGN.md`                | Current feature plan (kickoff output) |
-| `CONTEXT.md`               | Ubiquitous language glossary          |
-| `docs/kickoff-protocol.md` | Kickoff procedure                     |
+| File                       | Role                                                                                          |
+| -------------------------- | --------------------------------------------------------------------------------------------- |
+| `AGENTS.md`                | Agent instructions ([agents.md](https://agents.md)); nested per package                       |
+| `CLAUDE.md`                | Symlink → `AGENTS.md`                                                                         |
+| `PLAN.md`                  | Current feature plan (kickoff output)                                                         |
+| `DESIGN.md`                | Visual identity ([google-labs-code/design.md](https://github.com/google-labs-code/design.md)) |
+| `CONTEXT.md`               | Ubiquitous language glossary                                                                  |
+| `docs/kickoff-protocol.md` | Kickoff procedure                                                                             |
+| `docs/tdd-protocol.md`     | TDD at the Zod contract boundary                                                              |
 
 ## Kickoff
 
