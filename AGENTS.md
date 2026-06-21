@@ -38,14 +38,15 @@ pnpm exec playwright install chromium
 
 ## Testing instructions
 
-**Done means all of these exit zero from the repo root:**
+**Done means the full gate exits zero from the repo root:**
 
 ```sh
-pnpm typecheck
-pnpm lint
-pnpm test
-pnpm analyze
+pnpm gate
 ```
+
+Equivalent to `typecheck`, `lint`, `test:agent-policy`, `test:unit`, `test`, and `analyze`.
+
+**Before PR / merge** (feature or dependency change), also run security review per [`docs/security-protocol.md`](./docs/security-protocol.md): `pnpm security:check` + diff checklist (security-review skill). Not part of `pnpm gate` or CI — agent/human before PR ([ADR 0007](./docs/adr/0007-security-review-tier.md)).
 
 Do not report a task complete with any gate failing. If a failure looks unrelated, say so and name the failing test.
 
@@ -56,6 +57,8 @@ Do not report a task complete with any gate failing. If a failure looks unrelate
 | `pnpm test:all`       | Unit then e2e                                       |
 | `pnpm analyze`        | fallow audit — new issues on changed code only      |
 | `pnpm analyze:report` | fallow dead-code + health (informational, optional) |
+| `pnpm security:check` | Secrets grep on staged files (before PR)            |
+| `pnpm gate`           | Full gate — matches CI                              |
 
 Static analysis details: [`docs/static-analysis-protocol.md`](./docs/static-analysis-protocol.md). Tier placement: [ADR 0002](./docs/adr/0002-static-analysis-tier.md).
 
@@ -106,15 +109,15 @@ When context compacts, follow [`docs/context-protocol.md`](./docs/context-protoc
 
 Project skills in [`.agents/skills/`](./.agents/skills/) — inventory and lifecycle in [`docs/skills-protocol.md`](./docs/skills-protocol.md). After clone: `./scripts/link-agent-skills.sh` for Cursor/Claude discovery.
 
-| Order | Skill               | Use                                                        |
-| ----- | ------------------- | ---------------------------------------------------------- |
-| 1     | **grill-with-docs** | Kickoff → `PLAN.md` approved                               |
-| 2     | **tdd**             | Red-green at Zod boundary                                  |
-| 2b    | **acceptance**      | Happy + failure e2e from `PLAN.md` scenarios               |
-| 3     | **verify**          | Full gates + self-heal on failure                          |
-| 4     | **analyze**         | fallow (included in verify; run alone when triaging)       |
-| 5     | **security-review** | Before merge — stub until fork #13                         |
-| —     | **orchestrate**     | Parallel work / delegation — not part of feature lifecycle |
+| Order | Skill               | Use                                                                                  |
+| ----- | ------------------- | ------------------------------------------------------------------------------------ |
+| 1     | **grill-with-docs** | Kickoff → `PLAN.md` approved                                                         |
+| 2     | **tdd**             | Red-green at Zod boundary                                                            |
+| 2b    | **acceptance**      | Happy + failure e2e from `PLAN.md` scenarios                                         |
+| 3     | **verify**          | Full gates + self-heal on failure                                                    |
+| 4     | **analyze**         | fallow (included in verify; run alone when triaging)                                 |
+| 5     | **security-review** | After `pnpm gate`; before PR — [`security-protocol.md`](./docs/security-protocol.md) |
+| —     | **orchestrate**     | Parallel work / delegation — not part of feature lifecycle                           |
 
 Protocols are canonical; skills are pointers only.
 
@@ -139,13 +142,14 @@ Reference slice: Notes (`packages/schemas/src/note.ts` → API → `apps/web/src
 
 ## PR instructions
 
-- Run the **full gate** before opening or updating a PR: `pnpm gate` (or individual gates — same as [CI](./docs/ci-protocol.md)).
-- Pre-commit (Lefthook) runs **fast gates only** (`typecheck` + `lint` + **agent-policy**) — see [ADR 0001](./docs/adr/0001-tiered-quality-gates.md), [ADR 0002](./docs/adr/0002-static-analysis-tier.md), and [ADR 0004](./docs/adr/0004-no-agent-suppressions.md). E2e and fallow are not in the hook; run `pnpm test` and `pnpm analyze` explicitly.
+- Run **`pnpm gate`** before opening or updating a PR (same as [CI](./docs/ci-protocol.md)).
+- Run **`pnpm security:check`** + security-review checklist before PR when the change is a feature slice or touches dependencies ([security-protocol](./docs/security-protocol.md)).
+- Pre-commit (Lefthook) runs **fast gates only** (`typecheck` + `lint` + **agent-policy**) — see [ADR 0001](./docs/adr/0001-tiered-quality-gates.md), [ADR 0002](./docs/adr/0002-static-analysis-tier.md), and [ADR 0004](./docs/adr/0004-no-agent-suppressions.md). E2e, fallow, and security review are not in the hook.
 - Flag new dependencies in the PR/summary; install only via `sfw pnpm`.
 - Only create commits or PRs when the human asks.
 
 ## Recovery
 
 ```sh
-git stash && git checkout main && sfw pnpm install && pnpm typecheck && pnpm lint && pnpm test && pnpm analyze
+git stash && git checkout main && sfw pnpm install && pnpm gate
 ```

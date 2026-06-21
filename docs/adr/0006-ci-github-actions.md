@@ -17,7 +17,7 @@ Accepted — fork #11
 5. **Checkout** `fetch-depth: 0` so fallow `new-only` attribution works against merge-base on PRs.
 6. **Deploy preview** — not in base scaffold; products add when they have a host.
 
-Security-review CI job deferred to fork #13.
+Security-review is a **local slow gate** before PR ([ADR 0007](./adr/0007-security-review-tier.md)); not a separate CI job in base scaffold.
 
 ## Consequences
 

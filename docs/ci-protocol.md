@@ -83,17 +83,13 @@ This greenfield scaffold has **no default host**. When a product adds deploy:
 
 Fork #11 leaves deploy as an open extension point.
 
-## Pipeline order (with future forks)
+## Pipeline order
 
 ```
-PR opened → CI quality job (this fork)
-              ↓ green
-         security-review (fork #13 — stub today)
-              ↓
-         merge → deploy (product)
+implement → pnpm gate → pnpm security:check + security-review → PR → CI quality job → merge
 ```
 
-Security job lands in fork #13; do not skip local verify waiting for CI-only checks.
+Security review is **local before PR** ([security-protocol](./security-protocol.md), [ADR 0007](./adr/0007-security-review-tier.md)). CI runs `pnpm gate` only — do not skip local verify or security waiting for CI.
 
 ## Branch protection (recommended)
 
@@ -117,7 +113,8 @@ Configure in GitHub repo Settings → Branches.
 - [`docs/debug-protocol.md`](./debug-protocol.md) — self-heal before push
 - [`docs/mcp-protocol.md`](./mcp-protocol.md) — CI is shell-only
 - [`docs/static-analysis-protocol.md`](./static-analysis-protocol.md) — fallow in CI
-- Fork #13 — security gate job before merge
+- [`docs/security-protocol.md`](./security-protocol.md) — pre-PR security review
+- Fork #13 ✓ — security slow gate (local); optional CI security job deferred
 
 ## Explicitly not in base CI
 

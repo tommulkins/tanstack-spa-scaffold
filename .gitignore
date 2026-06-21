@@ -9,3 +9,5 @@ test-results
 .fallow/
 reports/dossiers/*
 !reports/dossiers/.gitkeep
+reports/security/*
+!reports/security/.gitkeep

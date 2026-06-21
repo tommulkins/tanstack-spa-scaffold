@@ -30,16 +30,17 @@ pnpm exec playwright install chromium
 
 ## Scripts
 
-| Command          | Purpose                            |
-| ---------------- | ---------------------------------- |
-| `pnpm dev`       | Web + API in parallel              |
-| `pnpm typecheck` | TypeScript all packages            |
-| `pnpm lint`      | Prettier + ESLint                  |
-| `pnpm test:unit` | Vitest                             |
-| `pnpm test`      | Playwright e2e                     |
-| `pnpm test:all`  | Unit then e2e                      |
-| `pnpm analyze`   | fallow audit (new-only gate)       |
-| `pnpm gate`      | Full gate — matches GitHub Actions |
+| Command               | Purpose                                  |
+| --------------------- | ---------------------------------------- |
+| `pnpm dev`            | Web + API in parallel                    |
+| `pnpm typecheck`      | TypeScript all packages                  |
+| `pnpm lint`           | Prettier + ESLint                        |
+| `pnpm test:unit`      | Vitest                                   |
+| `pnpm test`           | Playwright e2e                           |
+| `pnpm test:all`       | Unit then e2e                            |
+| `pnpm analyze`        | fallow audit (new-only gate)             |
+| `pnpm gate`           | Full gate — matches GitHub Actions       |
+| `pnpm security:check` | Secrets scan on staged files (before PR) |
 
 A task is not done until `pnpm gate` exits zero (or each gate individually).
 
@@ -63,9 +64,8 @@ A task is not done until `pnpm gate` exits zero (or each gate individually).
 | `docs/mcp-protocol.md`             | Optional MCP / AXI; shell gates canonical                                                     |
 | `docs/ci-protocol.md`              | GitHub Actions full gate; `pnpm gate`; no-mistakes optional                                   |
 | `docs/e2e-protocol.md`             | Acceptance scenarios; anti-lazy e2e rules                                                     |
-| `docs/security-protocol.md`        | Security review stub (fork #13)                                                               |
-| `WORKFLOW.md` § Fork #12           | ~~Planned~~ ✓ — see `docs/e2e-protocol.md`                                                    |
-| `WORKFLOW.md` § Fork #13           | Planned: full security review protocol (stub skill exists from fork #6)                       |
+| `docs/security-protocol.md`        | Pre-PR security review; secrets scan; diff checklist                                          |
+| `WORKFLOW.md` § Fork #13           | ~~Planned~~ ✓ — see `docs/security-protocol.md`                                               |
 
 ## Kickoff
 

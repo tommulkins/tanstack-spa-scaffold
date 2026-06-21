@@ -27,7 +27,7 @@ Resolve before moving on:
 6. Definition of done (named tests or observable behavior)
 7. Recovery if the session breaks
 
-Write answers into `PLAN.md` (Goal, Non-goals, Constraints, Anti-patterns). Add § Security constraints when the feature touches auth, PII, or trust boundaries (full rules: fork #13).
+Write answers into `PLAN.md` (Goal, Non-goals, Constraints, Anti-patterns). Add § Security constraints when the feature touches auth, PII, or trust boundaries — see [`security-protocol.md`](./security-protocol.md) § Kickoff integration.
 
 If the question is answerable from the repo, explore the codebase instead of asking.
 

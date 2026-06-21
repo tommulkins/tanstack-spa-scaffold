@@ -6,7 +6,7 @@ Any harness can follow this file. [firstmate](https://github.com/kunchenguid/fir
 
 ## Default model
 
-**Single agent, one session:** grill-with-docs → tdd → verify (+ analyze) → security-review (fork #13).
+**Single agent, one session:** grill-with-docs → tdd → verify (+ analyze) → security-review.
 
 Use this for normal feature slices, scaffold changes, and the video demo unless you are intentionally showing parallel crew.
 
@@ -32,7 +32,7 @@ The **parent agent** is the liaison. It spawns typed subagents, waits for result
 - **explore** — read-only codebase search; parent writes the plan
 - **generalPurpose** — implementation in scoped brief when parent cannot fit context
 - **shell** — git/terminal sequences the parent should not interleave with edits
-- **bugbot / security-review** — readonly review of branch or uncommitted diff (fork #13)
+- **bugbot / security-review** — readonly review of branch or uncommitted diff
 
 Rules:
 

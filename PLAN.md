@@ -16,7 +16,7 @@
 
 ## Security constraints
 
-<!-- fork #13: data sensitivity, trust boundaries, explicit non-goals for auth/secrets — optional until feature needs them -->
+<!-- data sensitivity, trust boundaries, explicit non-goals for auth/secrets — fill at kickoff when feature touches auth, PII, payments, or third-party trust; see docs/security-protocol.md -->
 
 ## Architecture
 

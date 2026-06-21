@@ -4,7 +4,7 @@ Living document for a rigorous, agent-assisted workflow: **new project or featur
 
 Each forked discussion adds decisions here. Prefer succinct entries; link out for detail.
 
-> **New session?** Read [`SESSION-HANDOFF.md`](./SESSION-HANDOFF.md) first — current state, repos, and **Fork #13** pickup prompt.
+> **New session?** Read [`SESSION-HANDOFF.md`](./SESSION-HANDOFF.md) first — current state, repos, and workflow status (all 13 forks complete).
 
 ---
 
@@ -563,13 +563,13 @@ Fallow ships MCP/LSP/skills in `node_modules`; we use the **protocol + root skil
 
 ### Inventory (lifecycle order)
 
-| Skill           | Protocol                           | Status          |
-| --------------- | ---------------------------------- | --------------- |
-| grill-with-docs | `docs/kickoff-protocol.md`         | Active          |
-| tdd             | `docs/tdd-protocol.md`             | Active          |
-| verify          | `docs/debug-protocol.md`           | Active          |
-| analyze         | `docs/static-analysis-protocol.md` | Active          |
-| security-review | `docs/security-protocol.md`        | Stub → fork #13 |
+| Skill           | Protocol                           | Status |
+| --------------- | ---------------------------------- | ------ |
+| grill-with-docs | `docs/kickoff-protocol.md`         | Active |
+| tdd             | `docs/tdd-protocol.md`             | Active |
+| verify          | `docs/debug-protocol.md`           | Active |
+| analyze         | `docs/static-analysis-protocol.md` | Active |
+| security-review | `docs/security-protocol.md`        | Active |
 
 Meta doc: `docs/skills-protocol.md`. Index: `.agents/skills/README.md`.
 
@@ -594,7 +594,7 @@ Optional — repo works without symlinks; agents read `.agents/skills/` directly
 | --------------------------------- | ----------------------------------------- |
 | `docs/skills-protocol.md`         | Inventory, lifecycle, add-skill procedure |
 | `.agents/skills/README.md`        | Quick index                               |
-| `.agents/skills/security-review/` | Stub until fork #13                       |
+| `.agents/skills/security-review/` | Pre-PR security review skill              |
 | `AGENTS.md` § Skills              | Summary table                             |
 
 ### Open from fork #6
@@ -734,7 +734,7 @@ Already in `AGENTS.md`: smallest correct diff, schema-first TDD, full gate befor
 ### Open from fork #9
 
 - [ ] `beforeShellExecution` deny `git commit --no-verify` — optional hardening
-- [ ] `.env` / secret scan in pre-commit — fork #13
+- [x] `.env` / secret scan — `pnpm security:check` before PR (fork #13); not in pre-commit
 
 ---
 
@@ -813,7 +813,7 @@ Local parity before PR. no-mistakes optional for push-time gate — not a repo d
 
 - [ ] Branch protection on `main` — enable in GitHub Settings (human)
 - [ ] Deploy preview job — when product has host
-- [ ] Security CI job — fork #13
+- [ ] Security CI job — optional product extension (local gate in fork #13 ✓)
 - [ ] gh-axi in failure triage docs — optional
 
 ---
@@ -858,17 +858,13 @@ Local parity before PR. no-mistakes optional for push-time gate — not a repo d
 
 ## Fork #13 — Security review
 
-**Status:** Planned — **stub from fork #6** (`docs/security-protocol.md`, `.agents/skills/security-review/`); full protocol in fork #13 session
+**Status:** ✓ Decided — 2026-06-21
 
 **Goal:** Mandatory security pass before merge — supply chain, code diff review, and API/web baseline checks so agents cannot skip security the way they skip rigorous tests.
 
-**Pipeline position:** after static analysis (#5) and feature verification (#4 / #12); **before CI/CD (#11)** and production. Not in fast pre-commit (ADR 0001).
+**Pipeline position:** after `pnpm gate`; **before PR/merge**. Not in fast pre-commit (ADR 0001). Not in CI baseline (ADR 0006) — local agent/human gate (ADR 0007).
 
-### Problem
-
-`sfw` (fork #1) covers install-time supply chain only. Nothing in the workflow yet requires a **security review of the diff**, secrets hygiene, or API hardening checks before merge.
-
-### Planned decisions
+### Decisions
 
 #### 1. When security review runs
 
@@ -879,57 +875,54 @@ Local parity before PR. no-mistakes optional for push-time gate — not a repo d
 | Architecture / auth / PII boundary change | yes — human sign-off on findings        |
 | Docs-only change                          | skip unless touching security protocol  |
 
-Runs after `pnpm typecheck`, `pnpm lint`, `pnpm test` green — security is an additional gate, not a substitute.
+Runs after `pnpm gate` green — security is an additional gate, not a substitute.
 
 #### 2. Layers
 
-| Layer                 | Tool / practice                                              | Notes                                                             |
-| --------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------- |
-| **Supply chain**      | `sfw pnpm` (decided)                                         | Install/add/update only; flag new deps in summary                 |
-| **Diff review**       | Security-review agent / skill                                | Read-only pass on branch or uncommitted diff; structured findings |
-| **Static (optional)** | ESLint security plugins, Semgrep, or fallow-adjacent rules   | Decide in fork #13; tier with #5                                  |
-| **API baseline**      | Zod on all inputs; no stack traces in 4xx/5xx; CORS explicit | Align with existing scaffold                                      |
-| **Secrets**           | `.env` gitignored; no tokens in dossiers, logs, or commits   | Hook reinforcement in fork #9                                     |
+| Layer                 | Tool / practice                                          | Notes                                    |
+| --------------------- | -------------------------------------------------------- | ---------------------------------------- |
+| **Supply chain**      | `sfw pnpm` (decided)                                     | Install/add/update only; flag new deps   |
+| **Secrets**           | `pnpm security:check` / `scripts/check-secrets.sh`       | Staged grep; block `.env` commits        |
+| **Diff review**       | Security-review skill + optional readonly subagent       | Checklist in `docs/security-protocol.md` |
+| **Static (optional)** | ESLint + fallow                                          | No Semgrep in base scaffold              |
+| **API baseline**      | Zod on all inputs; no stack traces in 4xx; CORS explicit | Align with existing scaffold             |
 
 #### 3. Kickoff integration
 
-Add optional § **Security constraints** to `PLAN.md` (filled at grill):
-
-- Data sensitivity (PII, auth, payments)
-- Trust boundaries (browser ↔ API ↔ third parties)
-- Non-goals (“no auth in v1” is explicit)
-
-Agent must not introduce auth/secrets/storage without plan approval.
+§ **Security constraints** in `PLAN.md` — filled at grill when auth, PII, payments, or trust boundaries apply.
 
 #### 4. Findings and escalation
 
-- Findings recorded in a **security dossier** (extends fork #4 pattern) or harness-native review output
+- **Security dossier** — `docs/security-dossier-template.md` → `reports/security/` (gitignored)
 - **Critical / high:** stop — human must acknowledge before merge
-- **Medium / low:** fix or document accepted risk in `docs/adr/` if surprising
-- Same retry budget as debug protocol for fixable code issues; no silent dismiss
+- **Medium / low:** fix or document in dossier
+- Same retry budget as debug protocol; no silent dismiss
 
-#### 5. Deliverables (fork #13 session)
+#### 5. Deliverables ✓
 
-| Artifact                                  | Purpose                                                           |
-| ----------------------------------------- | ----------------------------------------------------------------- |
-| `docs/security-protocol.md`               | When to run, layers, escalation — **stub from #6; expand in #13** |
-| `.agents/skills/security-review/SKILL.md` | Discovery wrapper → protocol — **done in #6**                     |
-| `PLAN.md` + kickoff template              | § Security constraints stub                                       |
-| `AGENTS.md`                               | Security gate in PR / done definition                             |
-| Tier placement                            | Slow gate in ADR 0001 or ADR 0002                                 |
-| `WORKFLOW.md` § Fork #13                  | Mark decided                                                      |
+| Artifact                                           | Status |
+| -------------------------------------------------- | ------ |
+| `docs/security-protocol.md`                        | ✓      |
+| `docs/security-dossier-template.md`                | ✓      |
+| `docs/adr/0007-security-review-tier.md`            | ✓      |
+| `scripts/check-secrets.sh` + `pnpm security:check` | ✓      |
+| `.agents/skills/security-review/SKILL.md`          | ✓      |
+| `PLAN.md` § Security constraints                   | ✓      |
+| `AGENTS.md`                                        | ✓      |
+| ADR 0001 security tier                             | ✓      |
 
-#### 6. Explicitly not in fork #13 base scope
+#### 6. Resolved open items
+
+- Harness-native security subagent vs protocol-only → **protocol + optional readonly subagent**
+- Additional SAST → **defer** (ESLint + checklist + secrets grep)
+- Findings format → **markdown security dossier**
+
+#### 7. Explicitly not in fork #13 base scope
 
 - Full penetration test / bug bounty
-- Auth implementation (product feature, not scaffold)
+- Auth implementation (product feature)
 - SOC2/compliance checklists
-
-### Open until fork #13
-
-- [ ] Harness-native security subagent vs protocol-only (Cursor `security-review` vs agent-agnostic checklist)
-- [ ] Additional SAST tool beyond ESLint + manual review
-- [ ] Security findings format (markdown dossier vs SARIF vs AXI/TOON)
+- Semgrep / CI security job
 
 ---
 
@@ -998,4 +991,4 @@ Ideas only — **do not copy code or config from these into `scaffold/`:**
 | 2026-06-21 | #9            | Agent suppression hooks; ADR 0004; lefthook agent-policy; Cursor preToolUse block                          |
 | 2026-06-21 | #8            | Context protocol; re-read ladder; optional ponytail; compaction recovery                                   |
 | 2026-06-21 | #7            | Sub-agents protocol; ADR 0003 same gates; orchestrate skill; firstmate no-mistakes registration            |
-| 2026-06-21 | #13 plan      | Security review fork — diff review, supply chain, slow gate before CI                                      |
+| 2026-06-21 | #13           | Security protocol; ADR 0007; secrets check; security dossier; security-review skill                        |

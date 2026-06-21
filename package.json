@@ -15,6 +15,8 @@
     "test": "node scripts/run-e2e.mjs",
     "test:all": "pnpm test:unit && pnpm test",
     "test:agent-policy": "bash scripts/check-agent-suppressions.test.sh",
+    "test:security-check": "bash scripts/check-secrets.test.sh",
+    "security:check": "bash scripts/check-secrets.sh --staged",
     "gate": "pnpm typecheck && pnpm lint && pnpm test:agent-policy && pnpm test:unit && pnpm test && pnpm analyze",
     "prepare": "lefthook install"
   },

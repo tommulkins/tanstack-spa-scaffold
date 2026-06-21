@@ -29,7 +29,9 @@ The agent runs the feedback loop; the human steers architecture and approves mer
 
 ---
 
-## Completed (Forks #1–#12 + scaffold)
+## Completed (Forks #1–#13 + scaffold)
+
+All forks from the master outline are **decided and delivered** in the scaffold.
 
 ### Stack (locked in)
 
@@ -38,7 +40,7 @@ The agent runs the feedback loop; the human steers architecture and approves mer
 - Zod — shared contracts in `packages/schemas`
 - pnpm workspaces
 - Vitest (unit) + Playwright (e2e)
-- Lefthook pre-commit — `typecheck` + `lint` (not full e2e locally)
+- Lefthook pre-commit — `typecheck` + `lint` + agent-policy (not full e2e locally)
 - **sfw** — install/add/update via Socket Firewall; scripts use plain `pnpm`
 
 ### Agent files (no duplication)
@@ -50,7 +52,7 @@ The agent runs the feedback loop; the human steers architecture and approves mer
 | `PLAN.md`                         | Current feature plan                                                                          |
 | `DESIGN.md`                       | Visual identity — [google-labs-code/design.md](https://github.com/google-labs-code/design.md) |
 | `CONTEXT.md`                      | Glossary only (grill-with-docs)                                                               |
-| `docs/adr/`                       | Surprising architectural trade-offs                                                           |
+| `docs/adr/`                       | Surprising architectural trade-offs (0001–0007)                                               |
 | `docs/kickoff-protocol.md`        | Agent-agnostic kickoff procedure                                                              |
 | `.agents/skills/grill-with-docs/` | Thin skill → protocol                                                                         |
 
@@ -58,11 +60,10 @@ The agent runs the feedback loop; the human steers architecture and approves mer
 
 ```sh
 cd tanstack-spa-scaffold
-pnpm typecheck
-pnpm lint
-pnpm test:unit
-pnpm test
+pnpm gate
 ```
+
+Before PR (feature or dependency change): `pnpm security:check` + security-review skill.
 
 Setup on fresh clone:
 
@@ -70,6 +71,7 @@ Setup on fresh clone:
 cp .env.example .env
 sfw pnpm install
 pnpm exec playwright install chromium
+./scripts/link-agent-skills.sh
 ```
 
 ### Scaffold implementation notes
@@ -83,8 +85,7 @@ pnpm exec playwright install chromium
 
 - `docs/tdd-protocol.md` — canonical red-green procedure at the contract boundary
 - `.agents/skills/tdd/SKILL.md` — discovery wrapper
-- `AGENTS.md` § TDD and Zod — Kinney rule, layer order, Zod conventions
-- **Notes reference slice:** schemas → `packages/api/src/app.ts` → `apps/web/src/lib/notes.ts` → `/notes` route → `tests/e2e/notes.spec.ts`
+- **Notes reference slice:** schemas → API → web → e2e
 
 ### Fork #4 (Find bugs)
 
@@ -95,167 +96,61 @@ pnpm exec playwright install chromium
 
 ### Fork #5 (Static analysis)
 
-- [fallow](https://github.com/fallow-rs/fallow) — `pnpm analyze` (audit, new-issues gate), `pnpm analyze:report` (informational)
-- `docs/static-analysis-protocol.md`, ADR 0002, `.fallowrc.json`, `.agents/skills/analyze/`
-- Full gate: `typecheck` + `lint` + `test` + **`analyze`**
-
----
+- fallow — `pnpm analyze` in `pnpm gate`
+- `docs/static-analysis-protocol.md`, ADR 0002, `.agents/skills/analyze/`
 
 ### Fork #6 (Skills inventory)
 
-- `docs/skills-protocol.md` — lifecycle, inventory, add-skill rules
-- `.agents/skills/README.md` + five skills (security-review stub for fork #13)
-- Fixed skill → protocol paths; verify skill includes `pnpm analyze`
-- `./scripts/link-agent-skills.sh` for Cursor/Claude symlinks
+- `docs/skills-protocol.md` — lifecycle, inventory
+- `.agents/skills/README.md` + seven skills
+- `./scripts/link-agent-skills.sh`
 
----
+### Fork #7 (Sub-agents)
 
-### Doc naming (fork #2 patch)
-
-- **`PLAN.md`** — feature kickoff (goal, plan, verification, recovery)
-- **`DESIGN.md`** — visual identity only ([google-labs-code/design.md](https://github.com/google-labs-code/design.md)); default dark-slate stub ships in scaffold
-
----
+- `docs/subagents-protocol.md`, ADR 0003, orchestrate skill
 
 ### Fork #8 (Optimizations)
 
-- `docs/context-protocol.md` — re-read ladder, compaction recovery, token habits
-- ponytail optional (harness plugin, not vendored); baseline minimal-code rules stay in `AGENTS.md`
-- TOON/AXI — [`docs/mcp-protocol.md`](./docs/mcp-protocol.md) (fork #10 ✓)
-
----
+- `docs/context-protocol.md` — re-read ladder, compaction recovery
 
 ### Fork #9 (Hooks)
 
-- `docs/hooks-protocol.md`, ADR 0004 — ban `@ts-expect-error`, `eslint-disable`, etc.
-- `scripts/check-agent-suppressions.sh` + Lefthook `agent-policy`
-- `.cursor/hooks.json` — `preToolUse` deny on suppressions
-- `pnpm test:agent-policy` — checker self-test
-
----
+- `docs/hooks-protocol.md`, ADR 0004 — ban suppressions
 
 ### Fork #10 (MCPs)
 
-- `docs/mcp-protocol.md`, ADR 0005 — shell gates canonical; MCP optional
-- `docs/mcp.example.json` — optional Cursor MCP template (context7)
-- AXI/TOON guidance; gh-axi / browser AXI deferred to fork #11
-
----
+- `docs/mcp-protocol.md`, ADR 0005 — shell gates canonical
 
 ### Fork #11 (CI/CD)
 
-- `.github/workflows/ci.yml` — job `quality` on PR + push to main
-- `pnpm gate` — full gate script (local parity with Actions)
-- `docs/ci-protocol.md`, ADR 0006
-- Playwright artifacts on failure; deploy preview deferred
-
----
+- `.github/workflows/ci.yml`, `pnpm gate`, ADR 0006
 
 ### Fork #12 (Acceptance rigor)
 
-- `docs/e2e-protocol.md` — happy + reject e2e; anti-lazy rules; trace checklist
-- `.agents/skills/acceptance/` — discovery wrapper
-- `tests/e2e/notes.spec.ts` — whitespace reject path
-- `docs/examples/notes-acceptance.md` — filled plan example
+- `docs/e2e-protocol.md`, acceptance skill, Notes reject e2e
+
+### Fork #13 (Security review)
+
+- `docs/security-protocol.md` — pre-PR slow gate
+- `docs/security-dossier-template.md`, `reports/security/`
+- ADR 0007 — security tier after `pnpm gate`, before PR
+- `scripts/check-secrets.sh`, `pnpm security:check`
+- `.agents/skills/security-review/SKILL.md`
 
 ---
 
-## Resolved (forks #1–#12)
+## Resolved (forks #1–#13)
 
-| Topic               | Decision                                                                        |
-| ------------------- | ------------------------------------------------------------------------------- |
-| Pre-commit vs e2e   | Fast: `typecheck` + `lint` in Lefthook. Full `pnpm test` before merge. ADR 0001 |
-| CI `sfw pnpm`       | Fork #11 ✓ — `.github/workflows/ci.yml`, `pnpm gate`                            |
-| Plan approval       | `PLAN.md` § Plan checkbox canonical; GitHub issues optional                     |
-| firstmate           | Fork #7 ✓ — `no-mistakes` mode; subagents-protocol; ADR 0003                    |
-| Skill symlinks      | Run `./scripts/link-agent-skills.sh` after clone                                |
-| `ai-workflows` repo | Optional later; `WORKFLOW.md` in scaffold for now                               |
+| Topic              | Decision                                                             |
+| ------------------ | -------------------------------------------------------------------- |
+| Pre-commit vs e2e  | Fast: typecheck + lint + agent-policy. Full: `pnpm gate`. ADR 0001   |
+| Security before PR | `pnpm security:check` + diff checklist. ADR 0007. Not in CI baseline |
+| CI `sfw pnpm`      | `.github/workflows/ci.yml`, `pnpm gate`                              |
+| Plan approval      | `PLAN.md` § Plan checkbox canonical                                  |
+| firstmate          | Subagents-protocol; ADR 0003                                         |
+| Skill symlinks     | `./scripts/link-agent-skills.sh` after clone                         |
 
-No open carry-forward items — proceed to **Fork #13**.
-
----
-
-### Fork #7 (Sub-agents and quality gates)
-
-- `docs/subagents-protocol.md` — when to delegate, liaison/crewmate contracts, firstmate registration
-- `docs/crewmate-brief-template.md` — per-delegate brief
-- `docs/adr/0003-subagent-gates.md` — full gate required for every code-changing agent
-- `.agents/skills/orchestrate/SKILL.md` — meta skill for parallel work
-- Default: single-agent; video demo stays single-agent unless showing parallel crew
-
----
-
-## Remaining forks (in order)
-
-Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions + Changelog.
-
-### Fork #3 — TDD and Zod ✓
-
-**Decided:** Schema-first red-green at `packages/schemas` → API → web → e2e. Kinney rule; Zod single source of truth. Delivered: `docs/tdd-protocol.md`, `.agents/skills/tdd/`, `AGENTS.md` § TDD, Notes reference slice.
-
----
-
-### Fork #4 — Find bugs, deal with them ✓
-
-**Decided:** Self-healing loop on red gates — dossier → hypothesize → fix → re-run (max 3 attempts) → escalate. Delivered: `docs/debug-protocol.md`, `docs/dossier-template.md`, `.agents/skills/verify/`, `AGENTS.md` § When gates fail.
-
----
-
-### Fork #5 — Linters, formatters, static analysis ✓
-
-**Decided:** ESLint/Prettier (fast) + fallow (full). `pnpm analyze` gates new complexity/dead-code/dupes. Delivered: ADR 0002, static-analysis protocol, analyze skill.
-
----
-
-### Fork #6 — Skills inventory ✓
-
-**Decided:** `.agents/skills/` canonical; five skills → protocols; `docs/skills-protocol.md`; harness symlinks via script; security-review stub.
-
----
-
-### Fork #7 — Sub-agents and quality gates ✓
-
-**Decided:** Default single-agent; delegate with brief + isolated scope; same full gate (ADR 0003); firstmate `no-mistakes`; orchestrate skill.
-
----
-
-### Fork #8 — Optimizations ✓
-
-**Decided:** Repo files over chat; re-read ladder in context-protocol; ponytail optional for implement; gates never skipped for tokens.
-
----
-
-### Fork #9 — Hooks ✓
-
-**Decided:** Mechanical ban on suppressions; lefthook agent-policy; Cursor preToolUse; ADR 0004.
-
----
-
-### Fork #10 — MCPs ✓
-
-**Decided:** Shell gates canonical; MCP optional for docs/debug/triage; AXI preferred over heavy MCP; mcp.example.json.
-
----
-
-### Fork #11 — CI/CD ✓
-
-**Decided:** GitHub Actions `pnpm gate`; sfw frozen install; Playwright evidence on failure; no-mistakes optional.
-
----
-
-### Fork #12 — Acceptance rigor ✓
-
-**Decided:** PLAN.md scenarios before code; 1 happy + 1 reject e2e; plain Playwright; Notes whitespace reject spec.
-
----
-
-### Fork #13 — Security review ← **START HERE**
-
-**Goal:** Mandatory security pass before merge — supply chain + diff review + API baseline.
-
-**Prompt for new session:**
-
-> Read `WORKFLOW.md` § Fork #13 and `SESSION-HANDOFF.md`. Implement security review — protocol, skill, PLAN stub, AGENTS.md gate; update WORKFLOW when decided.
+**No remaining forks** from the original master outline.
 
 ---
 
@@ -263,7 +158,7 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 
 - **GitButler** — virtual branches for parallel agent work
 - **TOON** — token-efficient structured I/O (AXI)
-- **Kun Chen tooling** — [lavish-axi](https://github.com/kunchenguid/lavish-axi), [no-mistakes](https://github.com/kunchenguid/no-mistakes), [firstmate](https://github.com/kunchenguid/firstmate)
+- **Kun Chen tooling** — lavish-axi, no-mistakes, firstmate
 - **Video demo** — single-agent direct model unless showing parallel crew
 
 ---
@@ -274,9 +169,9 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 2. **Do not copy** from workspace example repos into scaffold.
 3. **Do not commit** unless user asks.
 4. Changes to workflow → `WORKFLOW.md`. Changes to template → `tanstack-spa-scaffold` repo.
-5. Task not done until `typecheck`, `lint`, `test` exit zero (in scaffold).
+5. Task not done until `pnpm gate` exits zero; security review before PR when applicable.
 6. Dependency changes → `sfw pnpm` only; flag new deps.
-7. One fork per conversation; update decision log when fork completes.
+7. New workflow forks → add to `WORKFLOW.md` (master outline #1–#13 is complete).
 
 ---
 
@@ -294,7 +189,7 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 10. ~~MCPs~~ ✓
 11. ~~CI/CD~~ ✓
 12. ~~E2E + Vitest conventions~~ ✓
-13. Security review
+13. ~~Security review~~ ✓
 
 ---
 

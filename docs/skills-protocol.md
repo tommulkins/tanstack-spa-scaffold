@@ -39,7 +39,7 @@ Body: link to protocol + prerequisites only. **`disable-model-invocation: true`*
 Use in order for a typical feature; skip steps that do not apply.
 
 ```
-grill-with-docs → tdd → verify (+ analyze) → security-review (fork #13)
+grill-with-docs → tdd → verify (+ analyze) → security-review
      │              │         │                      │
      ▼              ▼         ▼                      ▼
  kickoff        implement   gates green         before merge/CI
@@ -52,7 +52,7 @@ grill-with-docs → tdd → verify (+ analyze) → security-review (fork #13)
 | 2b  | **acceptance**      | [`e2e-protocol.md`](./e2e-protocol.md)                         | E2e happy + reject from § Acceptance scenarios      |
 | 3   | **verify**          | [`debug-protocol.md`](./debug-protocol.md)                     | After implement; any red gate; before claiming done |
 | 4   | **analyze**         | [`static-analysis-protocol.md`](./static-analysis-protocol.md) | Part of full verify (fallow); after tests green     |
-| 5   | **security-review** | [`security-protocol.md`](./security-protocol.md)               | Before merge/PR — **stub until fork #13**           |
+| 5   | **security-review** | [`security-protocol.md`](./security-protocol.md)               | After `pnpm gate`; before merge/PR                  |
 
 **Meta (parallel work, not lifecycle order):**
 
