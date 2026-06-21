@@ -53,6 +53,12 @@ grill-with-docs → tdd → verify (+ analyze) → security-review (fork #13)
 | 4   | **analyze**         | [`static-analysis-protocol.md`](./static-analysis-protocol.md) | Part of full verify (fallow); after tests green     |
 | 5   | **security-review** | [`security-protocol.md`](./security-protocol.md)               | Before merge/PR — **stub until fork #13**           |
 
+**Meta (parallel work, not lifecycle order):**
+
+| Skill           | Protocol                                           | When                                                      |
+| --------------- | -------------------------------------------------- | --------------------------------------------------------- |
+| **orchestrate** | [`subagents-protocol.md`](./subagents-protocol.md) | Parallel tasks, exploration, firstmate crew — not kickoff |
+
 **verify** runs the full gate suite including **analyze**. Invoke **analyze** alone when triaging fallow after ESLint is already green.
 
 ## Adding a skill

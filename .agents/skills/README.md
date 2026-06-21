@@ -9,5 +9,6 @@ Canonical skills for this repo. Full inventory and lifecycle: [`docs/skills-prot
 | [verify](./verify/SKILL.md)                   | [debug-protocol.md](../../docs/debug-protocol.md)                     |
 | [analyze](./analyze/SKILL.md)                 | [static-analysis-protocol.md](../../docs/static-analysis-protocol.md) |
 | [security-review](./security-review/SKILL.md) | [security-protocol.md](../../docs/security-protocol.md) (stub)        |
+| [orchestrate](./orchestrate/SKILL.md)         | [subagents-protocol.md](../../docs/subagents-protocol.md)             |
 
 Harness symlinks: `./scripts/link-agent-skills.sh`

@@ -104,15 +104,20 @@ When context compacts, re-read `AGENTS.md`, `PLAN.md`, and `CONTEXT.md`. For UI,
 
 Project skills in [`.agents/skills/`](./.agents/skills/) — inventory and lifecycle in [`docs/skills-protocol.md`](./docs/skills-protocol.md). After clone: `./scripts/link-agent-skills.sh` for Cursor/Claude discovery.
 
-| Order | Skill               | Use                                                  |
-| ----- | ------------------- | ---------------------------------------------------- |
-| 1     | **grill-with-docs** | Kickoff → `PLAN.md` approved                         |
-| 2     | **tdd**             | Red-green at Zod boundary                            |
-| 3     | **verify**          | Full gates + self-heal on failure                    |
-| 4     | **analyze**         | fallow (included in verify; run alone when triaging) |
-| 5     | **security-review** | Before merge — stub until fork #13                   |
+| Order | Skill               | Use                                                        |
+| ----- | ------------------- | ---------------------------------------------------------- |
+| 1     | **grill-with-docs** | Kickoff → `PLAN.md` approved                               |
+| 2     | **tdd**             | Red-green at Zod boundary                                  |
+| 3     | **verify**          | Full gates + self-heal on failure                          |
+| 4     | **analyze**         | fallow (included in verify; run alone when triaging)       |
+| 5     | **security-review** | Before merge — stub until fork #13                         |
+| —     | **orchestrate**     | Parallel work / delegation — not part of feature lifecycle |
 
 Protocols are canonical; skills are pointers only.
+
+## Orchestration
+
+Default: **one agent, one session** (grill → tdd → verify). For parallel tasks or broad exploration, follow [`docs/subagents-protocol.md`](./docs/subagents-protocol.md). Every delegate runs the **same full gate** before reporting done ([ADR 0003](./docs/adr/0003-subagent-gates.md)). Brief template: [`docs/crewmate-brief-template.md`](./docs/crewmate-brief-template.md).
 
 ## Code style and conventions
 

@@ -4,7 +4,7 @@ Living document for a rigorous, agent-assisted workflow: **new project or featur
 
 Each forked discussion adds decisions here. Prefer succinct entries; link out for detail.
 
-> **New session?** Read [`SESSION-HANDOFF.md`](./SESSION-HANDOFF.md) first — current state, repos, and **Fork #7** pickup prompt.
+> **New session?** Read [`SESSION-HANDOFF.md`](./SESSION-HANDOFF.md) first — current state, repos, and **Fork #8** pickup prompt.
 
 ---
 
@@ -363,7 +363,7 @@ Projects that ship through full validation use a [no-mistakes](https://github.co
 - [x] Add `CONTEXT.md` stub and `docs/adr/.gitkeep`
 - [x] **Naming:** `PLAN.md` for feature kickoff; `DESIGN.md` for visual identity ([google-labs-code/design.md](https://github.com/google-labs-code/design.md))
 - [x] **Plan approval:** `PLAN.md` § Plan checkbox is canonical; GitHub issues optional for tracking only
-- [x] **firstmate integration:** fork #7 (sub-agents) — not in scope until then
+- [x] **firstmate integration:** fork #7 — `docs/subagents-protocol.md`, ADR 0003, orchestrate skill
 
 ---
 
@@ -443,7 +443,7 @@ All items below were open across forks #1–#3; closed before starting fork #4.
 | Pre-commit vs full e2e  | Fast hook: `typecheck` + `lint`. Full `pnpm test` before merge. [ADR 0001](./docs/adr/0001-tiered-quality-gates.md) |
 | CI `sfw pnpm install`   | Fork #11 — `sfw pnpm install --frozen-lockfile`                                                                     |
 | Plan approval           | `PLAN.md` checkbox canonical; GitHub issues optional                                                                |
-| firstmate               | Fork #7                                                                                                             |
+| firstmate               | Fork #7 ✓ — subagents-protocol; register as `no-mistakes`; ADR 0003 same gates                                      |
 | Component / RTL tests   | Not in base template                                                                                                |
 | `@hono/zod-validator`   | Not in base template                                                                                                |
 | Failure dossiers        | Fork #4 — `docs/debug-protocol.md`; fork #12 for e2e trace depth                                                    |
@@ -606,13 +606,54 @@ Optional — repo works without symlinks; agents read `.agents/skills/` directly
 
 ## Fork #7 — Sub-agents and quality gates
 
-**Status:** Not started
+**Status:** Decided
 
-When to delegate; keep sub-agents aligned with project gates; avoid anti-patterns. firstmate orchestration fits here.
+### Decision
 
-### Decisions
+**Default single-agent; delegate only with a brief and isolated scope.** Sub-agents and firstmate crewmates follow the same `AGENTS.md` and **full gate** as direct work ([ADR 0003](./docs/adr/0003-subagent-gates.md)).
 
-_To be filled in this fork._
+### When to delegate
+
+| Yes                                   | No                                 |
+| ------------------------------------- | ---------------------------------- |
+| Parallel independent tasks            | Kickoff / grill                    |
+| Read-only explore or review subagents | Same-file overlap                  |
+| firstmate ship/scout in worktrees     | Small single-package edits         |
+| Investigation while parent plans      | Continuous mid-task human steering |
+
+### Orchestration
+
+| Pattern               | Role                                                                                            |
+| --------------------- | ----------------------------------------------------------------------------------------------- |
+| **Direct session**    | Default — one agent, full lifecycle                                                             |
+| **In-harness parent** | Cursor Task / similar — parent is liaison; typed subagents                                      |
+| **firstmate**         | External liaison + tmux crewmates + treehouse worktrees; register scaffold as **`no-mistakes`** |
+| **GitButler**         | Optional virtual branches — same crewmate contract                                              |
+
+Video demo: **single-agent** unless intentionally showing parallel crew.
+
+### Crewmate contract
+
+1. Read `AGENTS.md` (+ nested package files)
+2. Scoped brief — [`docs/crewmate-brief-template.md`](./docs/crewmate-brief-template.md)
+3. Full gate before done: `typecheck` + `lint` + `test` + `analyze`
+4. Red gates → [`docs/debug-protocol.md`](./docs/debug-protocol.md)
+5. Liaison runs verify on integrated result before merge
+
+### Agent files (scaffold)
+
+| File                                  | Purpose                        |
+| ------------------------------------- | ------------------------------ |
+| `docs/subagents-protocol.md`          | Canonical delegation procedure |
+| `docs/crewmate-brief-template.md`     | Per-delegate brief             |
+| `docs/adr/0003-subagent-gates.md`     | Same gates for all agents      |
+| `.agents/skills/orchestrate/SKILL.md` | Discovery wrapper → protocol   |
+| `AGENTS.md` § Orchestration           | Summary for all agents         |
+
+### Open from fork #7
+
+- [ ] firstmate `data/projects.md` one-liner in firstmate upstream docs — optional cross-link
+- [ ] GitButler + firstmate combined demo — video only
 
 ---
 
@@ -889,4 +930,5 @@ Ideas only — **do not copy code or config from these into `scaffold/`:**
 | 2026-06-21 | scaffold      | Align `AGENTS.md` with agents.md — dev/test/PR sections; nested package AGENTS.md                          |
 | 2026-06-21 | #5            | fallow static analysis; ADR 0002; `pnpm analyze` in full gate; analyze skill                               |
 | 2026-06-21 | #6            | Skills inventory; `docs/skills-protocol.md`; security-review stub; fix skill protocol links                |
+| 2026-06-21 | #7            | Sub-agents protocol; ADR 0003 same gates; orchestrate skill; firstmate no-mistakes registration            |
 | 2026-06-21 | #13 plan      | Security review fork — diff review, supply chain, slow gate before CI                                      |

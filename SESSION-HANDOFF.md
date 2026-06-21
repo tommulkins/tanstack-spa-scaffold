@@ -29,7 +29,7 @@ The agent runs the feedback loop; the human steers architecture and approves mer
 
 ---
 
-## Completed (Forks #1–#6 + scaffold)
+## Completed (Forks #1–#7 + scaffold)
 
 ### Stack (locked in)
 
@@ -117,18 +117,28 @@ pnpm exec playwright install chromium
 
 ---
 
-## Resolved (forks #1–#6)
+## Resolved (forks #1–#7)
 
 | Topic               | Decision                                                                        |
 | ------------------- | ------------------------------------------------------------------------------- |
 | Pre-commit vs e2e   | Fast: `typecheck` + `lint` in Lefthook. Full `pnpm test` before merge. ADR 0001 |
 | CI `sfw pnpm`       | Fork #11 — `sfw pnpm install --frozen-lockfile`                                 |
 | Plan approval       | `PLAN.md` § Plan checkbox canonical; GitHub issues optional                     |
-| firstmate           | Fork #7                                                                         |
+| firstmate           | Fork #7 ✓ — `no-mistakes` mode; subagents-protocol; ADR 0003                    |
 | Skill symlinks      | Run `./scripts/link-agent-skills.sh` after clone                                |
 | `ai-workflows` repo | Optional later; `WORKFLOW.md` in scaffold for now                               |
 
-No open carry-forward items — proceed to **Fork #7**.
+No open carry-forward items — proceed to **Fork #8**.
+
+---
+
+### Fork #7 (Sub-agents and quality gates)
+
+- `docs/subagents-protocol.md` — when to delegate, liaison/crewmate contracts, firstmate registration
+- `docs/crewmate-brief-template.md` — per-delegate brief
+- `docs/adr/0003-subagent-gates.md` — full gate required for every code-changing agent
+- `.agents/skills/orchestrate/SKILL.md` — meta skill for parallel work
+- Default: single-agent; video demo stays single-agent unless showing parallel crew
 
 ---
 
@@ -160,25 +170,26 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 
 ---
 
-### Fork #7 — Sub-agents and quality gates ← **START HERE**
+### Fork #7 — Sub-agents and quality gates ✓
 
-**Goal:** When to delegate work; keep sub-agents on the same gates; firstmate orchestration.
-
-**Suggested topics:**
-
-- [firstmate](https://github.com/kunchenguid/firstmate) liaison + crewmates in worktrees
-- Each crewmate gets `AGENTS.md` + brief; same verify/analyze gates
-- Video demo stays single-agent unless showing parallel crew
-
-**Prompt for new session:**
-
-> Read `WORKFLOW.md` and `SESSION-HANDOFF.md`. We're on **Fork #7 — Sub-agents and quality gates**. Propose decisions, keep it succinct, update WORKFLOW.md when we agree.
+**Decided:** Default single-agent; delegate with brief + isolated scope; same full gate (ADR 0003); firstmate `no-mistakes`; orchestrate skill.
 
 ---
 
-### Fork #8 — Optimizations
+### Fork #8 — Optimizations ← **START HERE**
 
-- Tool: [ponytail](https://github.com/DietrichGebert/ponytail)
+**Goal:** Token and context efficiency tooling.
+
+**Suggested topics:**
+
+- [ponytail](https://github.com/DietrichGebert/ponytail) for context trimming
+- When to compact vs re-read `PLAN.md` / protocols
+
+**Prompt for new session:**
+
+> Read `WORKFLOW.md` and `SESSION-HANDOFF.md`. We're on **Fork #8 — Optimizations**. Propose decisions, keep it succinct, update WORKFLOW.md when we agree.
+
+---
 
 ### Fork #9 — Hooks (prevent agent false-positives)
 
@@ -259,7 +270,7 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 4. ~~Find bugs, deal with them~~ ✓
 5. ~~Linters / fallow~~ ✓
 6. ~~Skills inventory~~ ✓
-7. Sub-agents
+7. ~~Sub-agents~~ ✓
 8. Optimizations / ponytail
 9. Hooks
 10. MCPs

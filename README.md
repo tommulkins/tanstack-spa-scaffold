@@ -53,6 +53,7 @@ A task is not done until `typecheck`, `lint`, `test`, and `analyze` all exit zer
 | `docs/static-analysis-protocol.md` | fallow — complexity, dead code, full-tier gate                                                |
 | `docs/debug-protocol.md`           | Self-heal when gates fail                                                                     |
 | `docs/skills-protocol.md`          | Skill inventory and lifecycle                                                                 |
+| `docs/subagents-protocol.md`       | When to delegate; crewmate contract; firstmate registration                                   |
 | `docs/security-protocol.md`        | Security review stub (fork #13)                                                               |
 | `WORKFLOW.md` § Fork #12           | Planned: acceptance scenarios, anti-lazy e2e rules (not implemented yet)                      |
 | `WORKFLOW.md` § Fork #13           | Planned: full security review protocol (stub skill exists from fork #6)                       |
