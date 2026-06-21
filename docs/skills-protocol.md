@@ -49,6 +49,7 @@ grill-with-docs → tdd → verify (+ analyze) → security-review (fork #13)
 | --- | ------------------- | -------------------------------------------------------------- | --------------------------------------------------- |
 | 1   | **grill-with-docs** | [`kickoff-protocol.md`](./kickoff-protocol.md)                 | New product or feature; before any feature code     |
 | 2   | **tdd**             | [`tdd-protocol.md`](./tdd-protocol.md)                         | After `PLAN.md` § Plan approved                     |
+| 2b  | **acceptance**      | [`e2e-protocol.md`](./e2e-protocol.md)                         | E2e happy + reject from § Acceptance scenarios      |
 | 3   | **verify**          | [`debug-protocol.md`](./debug-protocol.md)                     | After implement; any red gate; before claiming done |
 | 4   | **analyze**         | [`static-analysis-protocol.md`](./static-analysis-protocol.md) | Part of full verify (fallow); after tests green     |
 | 5   | **security-review** | [`security-protocol.md`](./security-protocol.md)               | Before merge/PR — **stub until fork #13**           |

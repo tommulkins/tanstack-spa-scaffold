@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { createFileRoute, Link } from '@tanstack/react-router';
 
 import { createNote, fetchNotes } from '../lib/notes.js';
+import { formatFieldError } from '../lib/format-field-error.js';
 
 export const Route = createFileRoute('/notes')({
   component: NotesPage,
@@ -76,7 +77,7 @@ function NotesPage() {
               />
               {field.state.meta.errors.length > 0 && (
                 <p className="text-sm text-red-400" role="alert">
-                  {field.state.meta.errors.join(', ')}
+                  {field.state.meta.errors.map(formatFieldError).join(', ')}
                 </p>
               )}
             </div>

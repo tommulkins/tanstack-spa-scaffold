@@ -30,7 +30,7 @@ schemas (fail) → API (fail) → web helpers (fail) → UI → e2e (fail) → g
 | **Schemas** | `packages/schemas/src/<name>.test.ts` | `parse` accepts valid payloads; rejects invalid shapes                        |
 | **API**     | `packages/api/src/<name>.test.ts`     | Hono `app.request()` — status, JSON shape, validation errors; no live server  |
 | **Web**     | `apps/web/src/**/*.test.ts`           | Pure fetch/mutation helpers with mocked `fetch`; schema parse at the boundary |
-| **E2E**     | `tests/e2e/<feature>.spec.ts`         | One happy path per user-visible feature; semantic locators only               |
+| **E2E**     | `tests/e2e/<feature>.spec.ts`         | **1 happy + 1 user-visible failure** per feature; semantic locators only      |
 
 ## Kinney rule
 
@@ -67,11 +67,9 @@ Keep request and response schemas separate when shapes differ.
 
 ## E2E conventions
 
-Follow `AGENTS.md` Playwright locator rules.
+Follow [`docs/e2e-protocol.md`](./e2e-protocol.md) and `AGENTS.md` Playwright locator rules.
 
-**Current (until fork #12):** one happy-path e2e per user-visible feature.
-
-**Fork #12 (planned):** min **1 happy + 1 failure-path** e2e per feature; scenarios approved in `PLAN.md` § Acceptance scenarios before implement. See `WORKFLOW.md` § Fork #12.
+**Minimum per user-visible feature:** 1 happy-path + 1 failure-path e2e. Scenarios approved in `PLAN.md` § Acceptance scenarios before implement.
 
 ## Reference slice
 
@@ -81,7 +79,7 @@ The in-repo **Notes** feature demonstrates the full stack:
 - `packages/api/src/app.ts` — routes validated with `@scaffold/schemas`
 - `apps/web/src/lib/notes.ts` — client helpers + tests
 - `apps/web/src/routes/notes.tsx` — Query + Form UI
-- `tests/e2e/notes.spec.ts` — create note, see it in the list
+- `tests/e2e/notes.spec.ts` — happy + reject paths (see [`e2e-protocol.md`](./e2e-protocol.md))
 
 Use it as a template; replace with product features during kickoff.
 

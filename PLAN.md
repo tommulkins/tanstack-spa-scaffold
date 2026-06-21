@@ -44,16 +44,15 @@ approved: [ ] yes
 
 ## Acceptance scenarios
 
-<!-- Gherkin-style scenarios — human-approved before implement (fork #12). See WORKFLOW.md § Fork #12. -->
+Required before implement — at least one **Happy** and one **Reject** per user-visible feature. Link each to a named test in § Verification. See [`docs/e2e-protocol.md`](./docs/e2e-protocol.md) and [`docs/examples/notes-acceptance.md`](./docs/examples/notes-acceptance.md).
 
-<!--
-Example:
+```markdown
 - [ ] **Happy:** Given I am on /notes, when I add "Buy milk", then it appears in the list
-- [ ] **Reject:** Given whitespace-only input, when I submit, then I see validation error and no item is created
--->
+- [ ] **Reject:** Given whitespace-only input, when I submit, then I see a validation error and no note is created
+```
 
 ## Recovery
 
 ```sh
-git stash && git checkout main && sfw pnpm install && pnpm typecheck && pnpm lint && pnpm test && pnpm analyze
+git stash && git checkout main && sfw pnpm install && pnpm gate
 ```

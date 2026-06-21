@@ -29,7 +29,7 @@ The agent runs the feedback loop; the human steers architecture and approves mer
 
 ---
 
-## Completed (Forks #1–#11 + scaffold)
+## Completed (Forks #1–#12 + scaffold)
 
 ### Stack (locked in)
 
@@ -151,7 +151,16 @@ pnpm exec playwright install chromium
 
 ---
 
-## Resolved (forks #1–#11)
+### Fork #12 (Acceptance rigor)
+
+- `docs/e2e-protocol.md` — happy + reject e2e; anti-lazy rules; trace checklist
+- `.agents/skills/acceptance/` — discovery wrapper
+- `tests/e2e/notes.spec.ts` — whitespace reject path
+- `docs/examples/notes-acceptance.md` — filled plan example
+
+---
+
+## Resolved (forks #1–#12)
 
 | Topic               | Decision                                                                        |
 | ------------------- | ------------------------------------------------------------------------------- |
@@ -162,7 +171,7 @@ pnpm exec playwright install chromium
 | Skill symlinks      | Run `./scripts/link-agent-skills.sh` after clone                                |
 | `ai-workflows` repo | Optional later; `WORKFLOW.md` in scaffold for now                               |
 
-No open carry-forward items — proceed to **Fork #12**.
+No open carry-forward items — proceed to **Fork #13**.
 
 ---
 
@@ -234,29 +243,17 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 
 ---
 
-### Fork #12 — E2E, unit tests, and acceptance rigor ← **START HERE**
+### Fork #12 — Acceptance rigor ✓
 
-**Goal:** Rigorous acceptance scenarios; mandatory happy + failure e2e; anti-lazy rules.
-
-**Prompt for new session:**
-
-> Read `WORKFLOW.md` § Fork #12 and `SESSION-HANDOFF.md`. Implement acceptance rigor — PLAN scenarios, e2e protocol, Notes reject e2e, update WORKFLOW when decided.
+**Decided:** PLAN.md scenarios before code; 1 happy + 1 reject e2e; plain Playwright; Notes whitespace reject spec.
 
 ---
 
-### Fork #13 — Security review
+### Fork #13 — Security review ← **START HERE**
 
 **Goal:** Mandatory security pass before merge — supply chain + diff review + API baseline.
 
-**Planned (see `WORKFLOW.md` § Fork #13):**
-
-- Slow gate after lint/tests, before CI (#11)
-- `docs/security-protocol.md`, `.agents/skills/security-review/`
-- `PLAN.md` § Security constraints at kickoff
-- Critical/high findings block merge until human ack
-- Builds on `sfw` (fork #1) and debug dossiers (fork #4)
-
-**Prompt for fork #13 session:**
+**Prompt for new session:**
 
 > Read `WORKFLOW.md` § Fork #13 and `SESSION-HANDOFF.md`. Implement security review — protocol, skill, PLAN stub, AGENTS.md gate; update WORKFLOW when decided.
 
@@ -296,7 +293,7 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 9. ~~Hooks~~ ✓
 10. ~~MCPs~~ ✓
 11. ~~CI/CD~~ ✓
-12. E2E + Vitest conventions
+12. ~~E2E + Vitest conventions~~ ✓
 13. Security review
 
 ---

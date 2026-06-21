@@ -79,6 +79,8 @@ pnpm exec playwright test tests/e2e/notes.spec.ts
 
 **Playwright locators:** `getByRole` first; `getByLabel` / `getByText` second; `data-testid` only when semantics do not exist. No raw CSS/XPath. No `waitForTimeout` or `networkidle` — use `expect(…).toBeVisible()`, `waitForResponse`, or `waitForRequest`. Do not weaken assertions to match broken UI.
 
+**Acceptance rigor:** Each user-visible feature needs **1 happy + 1 failure** e2e matching `PLAN.md` § Acceptance scenarios. Reject paths must assert no successful mutation when validation blocks submit. Details: [`docs/e2e-protocol.md`](./docs/e2e-protocol.md). Smoke-only "page loads" belongs in `smoke.spec.ts`, not feature specs.
+
 Add or update tests for behavior you change.
 
 ## When gates fail
@@ -108,6 +110,7 @@ Project skills in [`.agents/skills/`](./.agents/skills/) — inventory and lifec
 | ----- | ------------------- | ---------------------------------------------------------- |
 | 1     | **grill-with-docs** | Kickoff → `PLAN.md` approved                               |
 | 2     | **tdd**             | Red-green at Zod boundary                                  |
+| 2b    | **acceptance**      | Happy + failure e2e from `PLAN.md` scenarios               |
 | 3     | **verify**          | Full gates + self-heal on failure                          |
 | 4     | **analyze**         | fallow (included in verify; run alone when triaging)       |
 | 5     | **security-review** | Before merge — stub until fork #13                         |

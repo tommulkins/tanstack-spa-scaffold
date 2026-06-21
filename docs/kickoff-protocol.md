@@ -62,12 +62,12 @@ Add § Verification:
 
 - Root commands: `pnpm typecheck`, `pnpm lint`, `pnpm test`, `pnpm analyze`
 - Named unit and e2e tests
-- **Acceptance scenarios** (Gherkin-style bullets in § Acceptance scenarios) — at least one happy path and one failure path per feature; human approves before implement (full rules: fork #12 in `WORKFLOW.md`)
+- **Acceptance scenarios** (Gherkin-style bullets in § Acceptance scenarios) — at least one happy path and one failure path per user-visible feature; human approves before implement. Full rules: [`docs/e2e-protocol.md`](./e2e-protocol.md)
 
 Add § Recovery (minimum):
 
 ```sh
-git stash && git checkout main && sfw pnpm install && pnpm typecheck && pnpm lint && pnpm test && pnpm analyze
+git stash && git checkout main && sfw pnpm install && pnpm gate
 ```
 
 **Stop.** Wait for human approval. Set `approved: [x] yes` in § Plan only after explicit go-ahead. This checkbox is the canonical gate — optional GitHub issues for team tracking do not replace it.

@@ -4,7 +4,7 @@ Living document for a rigorous, agent-assisted workflow: **new project or featur
 
 Each forked discussion adds decisions here. Prefer succinct entries; link out for detail.
 
-> **New session?** Read [`SESSION-HANDOFF.md`](./SESSION-HANDOFF.md) first — current state, repos, and **Fork #12** pickup prompt.
+> **New session?** Read [`SESSION-HANDOFF.md`](./SESSION-HANDOFF.md) first — current state, repos, and **Fork #13** pickup prompt.
 
 ---
 
@@ -820,95 +820,39 @@ Local parity before PR. no-mistakes optional for push-time gate — not a repo d
 
 ## Fork #12 — E2E, unit tests, and acceptance rigor
 
-**Status:** Planned (not started)
+**Status:** Decided
 
-**Goal:** Stop agents from “going green” with shallow tests — rigorous, human-approved acceptance scenarios plus executable coverage at every layer.
+### Decision
 
-Builds on fork #3 (TDD pyramid), fork #4 (dossiers / no weakening assertions), and fork #5+ gates.
+**Human-approved scenarios in `PLAN.md` before code; executable proof at every layer.** Minimum **1 happy + 1 reject** e2e per user-visible feature. `PLAN.md` is the scenario source of truth — plain Playwright, no playwright-bdd in base scaffold.
 
-### Problem
+### Scenario gate
 
-Today the scaffold requires **one happy-path e2e per feature**. Schema/API layers carry rejection tests; e2e is the weakest anti-lazy layer. Gherkin syntax alone does not fix lazy scenarios — **who writes scenarios and when** does.
+§ **Acceptance scenarios** required at kickoff Phase 3 — approved with § Plan checkbox. § Verification links each scenario to a named test.
 
-### Planned decisions
+### Mandatory mix
 
-#### 1. Acceptance scenarios in `PLAN.md` (required before implement)
+| Layer       | Minimum                          |
+| ----------- | -------------------------------- |
+| Schemas     | valid + invalid                  |
+| API         | happy + 4xx                      |
+| Web helpers | reject before fetch              |
+| E2E         | 1 happy + 1 user-visible failure |
 
-Add § **Acceptance scenarios** to the kickoff template (Gherkin-_like_ bullets, no Cucumber required):
+### Agent files (scaffold)
 
-```markdown
-## Acceptance scenarios
+| File                                 | Purpose                   |
+| ------------------------------------ | ------------------------- |
+| `docs/e2e-protocol.md`               | Acceptance + e2e rules    |
+| `docs/examples/notes-acceptance.md`  | Filled Notes example      |
+| `.agents/skills/acceptance/SKILL.md` | Discovery wrapper         |
+| `tests/e2e/notes.spec.ts`            | Happy + whitespace reject |
 
-- [ ] **Happy:** Given …, when …, then …
-- [ ] **Reject:** Given invalid input, when …, then … (no side effect / error shown)
-```
+### Closed from fork #12
 
-- Listed in Phase 3; approved with `PLAN.md` § Plan checkbox
-- § Verification links each scenario to a **named test** (Vitest `-t` pattern or Playwright spec)
-- Agent must not drop or weaken scenarios during implement without plan amendment
-
-#### 2. Mandatory scenario mix per feature
-
-| Layer       | Minimum                              | Example                            |
-| ----------- | ------------------------------------ | ---------------------------------- |
-| Schemas     | valid + invalid cases                | `it.each` reject table             |
-| API         | happy + 400/error body               | whitespace POST → 400              |
-| Web helpers | parse fail before fetch              | invalid input never calls `fetch`  |
-| E2e         | **1 happy + 1 user-visible failure** | validation error; no spurious POST |
-
-Replace tdd-protocol “one happy path e2e” with this rule when fork #12 lands.
-
-#### 3. Executable Gherkin (optional scaffold default)
-
-Evaluate **playwright-bdd** or `@cucumber/playwright`:
-
-- `.feature` files committed at kickoff (or generated from approved `PLAN.md` scenarios)
-- Step definitions stay thin — reuse schema asserts and `apps/web/src/lib/` helpers
-- Vitest remains the fast contract layer; Cucumber does **not** replace schema/API tests
-
-**Default recommendation:** Gherkin-style `PLAN.md` scenarios for all projects; executable `.feature` files when the team wants reviewable specs in repo or for the video demo.
-
-#### 4. Anti-lazy test rules (agent contract)
-
-Document in `AGENTS.md` + `docs/e2e-protocol.md` (new):
-
-- No scenario that only asserts “page loads”
-- E2e must assert **outcome** (DOM, network, or error), not presence of a container
-- No weakening assertions to match broken UI (already in debug protocol — restate for e2e)
-- Failed submit: assert no successful mutation request when validation should block
-- Playwright trace reading checklist (extends fork #4 dossiers)
-
-#### 5. Reference slice updates
-
-Extend Notes demo:
-
-- E2e: whitespace-only note → inline error, list unchanged, no 201 POST
-- Optional: `tests/e2e/notes.feature` if executable Gherkin is adopted
-- `PLAN.md` example feature plan with filled acceptance scenarios
-
-#### 6. Deliverables (fork #12 session)
-
-| Artifact                                     | Purpose                                         |
-| -------------------------------------------- | ----------------------------------------------- |
-| `docs/e2e-protocol.md`                       | E2e + acceptance scenario rules                 |
-| `PLAN.md` + kickoff template                 | § Acceptance scenarios (stub exists)            |
-| `docs/tdd-protocol.md`                       | Update e2e minimums                             |
-| `AGENTS.md`                                  | Anti-lazy e2e bullets                           |
-| `.agents/skills/acceptance/` or extend `tdd` | Pointer to e2e protocol                         |
-| Notes feature                                | Second e2e failure path (+ optional `.feature`) |
-| `WORKFLOW.md` § Fork #12                     | Mark decided                                    |
-
-### Explicitly not in fork #12
-
-- Replacing Vitest schema tests with Cucumber
-- Component/RTL tests (closed in fork #3 — stay out of base template)
-- Mutation testing (consider with fallow in fork #5)
-
-### Open until fork #12
-
-- [ ] playwright-bdd vs plain Playwright + PLAN scenarios only
-- [ ] `.feature` files in repo vs PLAN.md as single source of truth
-- [ ] Trace-reading checklist depth (Kinney / Self-Testing AI Agents)
+- [x] playwright-bdd vs plain Playwright → **plain Playwright + PLAN.md**
+- [x] `.feature` vs PLAN.md → **PLAN.md canonical**
+- [x] Trace checklist → `docs/e2e-protocol.md`
 
 ---
 
@@ -1049,6 +993,7 @@ Ideas only — **do not copy code or config from these into `scaffold/`:**
 | 2026-06-21 | scaffold      | Align `AGENTS.md` with agents.md — dev/test/PR sections; nested package AGENTS.md                          |
 | 2026-06-21 | #5            | fallow static analysis; ADR 0002; `pnpm analyze` in full gate; analyze skill                               |
 | 2026-06-21 | #6            | Skills inventory; `docs/skills-protocol.md`; security-review stub; fix skill protocol links                |
+| 2026-06-21 | #12           | E2e protocol; happy+reject e2e; acceptance skill; Notes whitespace reject spec                             |
 | 2026-06-21 | #11           | GitHub Actions CI; `pnpm gate`; ADR 0006; sfw frozen install; Playwright artifacts                         |
 | 2026-06-21 | #9            | Agent suppression hooks; ADR 0004; lefthook agent-policy; Cursor preToolUse block                          |
 | 2026-06-21 | #8            | Context protocol; re-read ladder; optional ponytail; compaction recovery                                   |
