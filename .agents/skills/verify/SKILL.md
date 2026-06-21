@@ -12,6 +12,12 @@ From repo root, run until green or escalated:
 pnpm typecheck && pnpm lint && pnpm test && pnpm analyze
 ```
 
+Or run the CI-parity bundle:
+
+```sh
+pnpm gate
+```
+
 On failure: capture evidence → dossier from [`docs/dossier-template.md`](../../../docs/dossier-template.md) → fix → re-run. Max 3 attempts per root error; escalate on ambiguity, infra, or flake.
 
 Do not claim done until all gates exit zero.

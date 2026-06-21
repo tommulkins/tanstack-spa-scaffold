@@ -74,4 +74,4 @@ Parse `verdict`, `attribution`, and issue lists — do not paraphrase.
 ## Explicitly deferred
 
 - `fallow security` — fork #13 (security review)
-- Full-repo `--gate all` — fork #11 (CI baselines)
+- Full-repo `--gate all` on main — optional product policy; PR CI uses `new-only` ([ci-protocol](./ci-protocol.md))

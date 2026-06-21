@@ -29,7 +29,7 @@ The agent runs the feedback loop; the human steers architecture and approves mer
 
 ---
 
-## Completed (Forks #1–#10 + scaffold)
+## Completed (Forks #1–#11 + scaffold)
 
 ### Stack (locked in)
 
@@ -142,18 +142,27 @@ pnpm exec playwright install chromium
 
 ---
 
-## Resolved (forks #1–#10)
+### Fork #11 (CI/CD)
+
+- `.github/workflows/ci.yml` — job `quality` on PR + push to main
+- `pnpm gate` — full gate script (local parity with Actions)
+- `docs/ci-protocol.md`, ADR 0006
+- Playwright artifacts on failure; deploy preview deferred
+
+---
+
+## Resolved (forks #1–#11)
 
 | Topic               | Decision                                                                        |
 | ------------------- | ------------------------------------------------------------------------------- |
 | Pre-commit vs e2e   | Fast: `typecheck` + `lint` in Lefthook. Full `pnpm test` before merge. ADR 0001 |
-| CI `sfw pnpm`       | Fork #11 — `sfw pnpm install --frozen-lockfile`                                 |
+| CI `sfw pnpm`       | Fork #11 ✓ — `.github/workflows/ci.yml`, `pnpm gate`                            |
 | Plan approval       | `PLAN.md` § Plan checkbox canonical; GitHub issues optional                     |
 | firstmate           | Fork #7 ✓ — `no-mistakes` mode; subagents-protocol; ADR 0003                    |
 | Skill symlinks      | Run `./scripts/link-agent-skills.sh` after clone                                |
 | `ai-workflows` repo | Optional later; `WORKFLOW.md` in scaffold for now                               |
 
-No open carry-forward items — proceed to **Fork #11**.
+No open carry-forward items — proceed to **Fork #12**.
 
 ---
 
@@ -219,31 +228,21 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 
 ---
 
-### Fork #11 — CI/CD ← **START HERE**
+### Fork #11 — CI/CD ✓
 
-**Goal:** GitHub Actions; `sfw pnpm install --frozen-lockfile`; no-mistakes pipeline; deploy preview probes.
-
-**Prompt for new session:**
-
-> Read `WORKFLOW.md` and `SESSION-HANDOFF.md`. We're on **Fork #11 — CI/CD**. Propose decisions, keep it succinct, update WORKFLOW.md when we agree.
+**Decided:** GitHub Actions `pnpm gate`; sfw frozen install; Playwright evidence on failure; no-mistakes optional.
 
 ---
 
-### Fork #12 — E2E, unit tests, and acceptance rigor
+### Fork #12 — E2E, unit tests, and acceptance rigor ← **START HERE**
 
-**Goal:** Rigorous acceptance scenarios so agents cannot greenwash with trivial tests.
+**Goal:** Rigorous acceptance scenarios; mandatory happy + failure e2e; anti-lazy rules.
 
-**Planned (see `WORKFLOW.md` § Fork #12):**
-
-- § **Acceptance scenarios** in `PLAN.md` — Gherkin-style bullets, human-approved before code
-- Mandatory mix: schema/API rejects + **e2e happy + e2e failure path** per feature
-- Optional executable `.feature` (playwright-bdd); Vitest stays the contract layer
-- `docs/e2e-protocol.md`, anti-lazy rules, Notes failure-path e2e
-- Playwright trace checklist (extends fork #4 dossiers)
-
-**Prompt for fork #12 session:**
+**Prompt for new session:**
 
 > Read `WORKFLOW.md` § Fork #12 and `SESSION-HANDOFF.md`. Implement acceptance rigor — PLAN scenarios, e2e protocol, Notes reject e2e, update WORKFLOW when decided.
+
+---
 
 ### Fork #13 — Security review
 
@@ -296,7 +295,7 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 8. ~~Optimizations / ponytail~~ ✓
 9. ~~Hooks~~ ✓
 10. ~~MCPs~~ ✓
-11. CI/CD
+11. ~~CI/CD~~ ✓
 12. E2E + Vitest conventions
 13. Security review
 

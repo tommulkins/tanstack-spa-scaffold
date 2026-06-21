@@ -1,5 +1,7 @@
 # tanstack-spa-scaffold
 
+[![CI](https://github.com/tommulkins/tanstack-spa-scaffold/actions/workflows/ci.yml/badge.svg)](https://github.com/tommulkins/tanstack-spa-scaffold/actions/workflows/ci.yml)
+
 Greenfield monorepo template for agent-assisted development: **TanStack SPA + Hono API + Zod contracts + quality gates**.
 
 Part of the [ai-workflows](https://github.com/tommulkins/ai-workflows) decision log.
@@ -28,17 +30,18 @@ pnpm exec playwright install chromium
 
 ## Scripts
 
-| Command          | Purpose                  |
-| ---------------- | ------------------------ |
-| `pnpm dev`       | Web + API in parallel    |
-| `pnpm typecheck` | TypeScript all packages  |
-| `pnpm lint`      | Prettier + ESLint        |
-| `pnpm test:unit` | Vitest                   |
-| `pnpm test`      | Playwright e2e           |
-| `pnpm test:all`  | Unit then e2e            |
-| `pnpm analyze`   | fallow audit (full gate) |
+| Command          | Purpose                            |
+| ---------------- | ---------------------------------- |
+| `pnpm dev`       | Web + API in parallel              |
+| `pnpm typecheck` | TypeScript all packages            |
+| `pnpm lint`      | Prettier + ESLint                  |
+| `pnpm test:unit` | Vitest                             |
+| `pnpm test`      | Playwright e2e                     |
+| `pnpm test:all`  | Unit then e2e                      |
+| `pnpm analyze`   | fallow audit (new-only gate)       |
+| `pnpm gate`      | Full gate — matches GitHub Actions |
 
-A task is not done until `typecheck`, `lint`, `test`, and `analyze` all exit zero.
+A task is not done until `pnpm gate` exits zero (or each gate individually).
 
 ## Agent files
 
@@ -58,6 +61,7 @@ A task is not done until `typecheck`, `lint`, `test`, and `analyze` all exit zer
 | `docs/context-protocol.md`         | Compaction recovery; re-read ladder; optional ponytail                                        |
 | `docs/hooks-protocol.md`           | Ban agent suppressions; Lefthook + Cursor hooks                                               |
 | `docs/mcp-protocol.md`             | Optional MCP / AXI; shell gates canonical                                                     |
+| `docs/ci-protocol.md`              | GitHub Actions full gate; `pnpm gate`; no-mistakes optional                                   |
 | `docs/security-protocol.md`        | Security review stub (fork #13)                                                               |
 | `WORKFLOW.md` § Fork #12           | Planned: acceptance scenarios, anti-lazy e2e rules (not implemented yet)                      |
 | `WORKFLOW.md` § Fork #13           | Planned: full security review protocol (stub skill exists from fork #6)                       |

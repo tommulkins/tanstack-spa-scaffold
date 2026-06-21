@@ -136,7 +136,7 @@ Reference slice: Notes (`packages/schemas/src/note.ts` → API → `apps/web/src
 
 ## PR instructions
 
-- Run the **full gate** before opening or updating a PR: `pnpm typecheck`, `pnpm lint`, `pnpm test`, and `pnpm analyze`.
+- Run the **full gate** before opening or updating a PR: `pnpm gate` (or individual gates — same as [CI](./docs/ci-protocol.md)).
 - Pre-commit (Lefthook) runs **fast gates only** (`typecheck` + `lint` + **agent-policy**) — see [ADR 0001](./docs/adr/0001-tiered-quality-gates.md), [ADR 0002](./docs/adr/0002-static-analysis-tier.md), and [ADR 0004](./docs/adr/0004-no-agent-suppressions.md). E2e and fallow are not in the hook; run `pnpm test` and `pnpm analyze` explicitly.
 - Flag new dependencies in the PR/summary; install only via `sfw pnpm`.
 - Only create commits or PRs when the human asks.

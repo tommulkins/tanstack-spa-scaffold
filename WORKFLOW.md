@@ -4,7 +4,7 @@ Living document for a rigorous, agent-assisted workflow: **new project or featur
 
 Each forked discussion adds decisions here. Prefer succinct entries; link out for detail.
 
-> **New session?** Read [`SESSION-HANDOFF.md`](./SESSION-HANDOFF.md) first — current state, repos, and **Fork #11** pickup prompt.
+> **New session?** Read [`SESSION-HANDOFF.md`](./SESSION-HANDOFF.md) first — current state, repos, and **Fork #12** pickup prompt.
 
 ---
 
@@ -170,8 +170,8 @@ tanstack-spa-scaffold/
 
 ### Closed from fork #1
 
-- [x] **Pre-commit:** fast gates only (`typecheck` + `lint` via Lefthook). Full suite including e2e before merge — agent runs `pnpm test`; CI enforces in fork #11. See [ADR 0001](./docs/adr/0001-tiered-quality-gates.md).
-- [x] **CI install:** fork #11 will use `sfw pnpm install --frozen-lockfile` + Socket pin — decided in principle; implementation deferred to fork #11.
+- [x] **Pre-commit:** fast gates only (`typecheck` + `lint` + agent-policy via Lefthook). Full suite in CI and before merge — `pnpm gate`. See [ADR 0001](./docs/adr/0001-tiered-quality-gates.md).
+- [x] **CI install:** `sfw pnpm install --frozen-lockfile` in GitHub Actions — fork #11
 
 ---
 
@@ -441,7 +441,7 @@ All items below were open across forks #1–#3; closed before starting fork #4.
 | Topic                   | Decision                                                                                                            |
 | ----------------------- | ------------------------------------------------------------------------------------------------------------------- |
 | Pre-commit vs full e2e  | Fast hook: `typecheck` + `lint`. Full `pnpm test` before merge. [ADR 0001](./docs/adr/0001-tiered-quality-gates.md) |
-| CI `sfw pnpm install`   | Fork #11 — `sfw pnpm install --frozen-lockfile`                                                                     |
+| CI `sfw pnpm install`   | Fork #11 ✓ — `.github/workflows/ci.yml`, `pnpm gate`, [ci-protocol](./docs/ci-protocol.md)                          |
 | Plan approval           | `PLAN.md` checkbox canonical; GitHub issues optional                                                                |
 | firstmate               | Fork #7 ✓ — subagents-protocol; register as `no-mistakes`; ADR 0003 same gates                                      |
 | Component / RTL tests   | Not in base template                                                                                                |
@@ -503,7 +503,7 @@ Playwright: cite trace zip from `test-results/`; fork #12 adds deeper trace-read
 ### Open from fork #4
 
 - [ ] Playwright trace reading checklist — fork #12 (`docs/e2e-protocol.md`)
-- [ ] no-mistakes / AXI evidence pipeline — fork #11 (CI)
+- [x] no-mistakes / CI evidence — fork #11: Playwright artifacts on failure; no-mistakes optional local ([ci-protocol](./docs/ci-protocol.md))
 
 ---
 
@@ -548,7 +548,7 @@ Fallow ships MCP/LSP/skills in `node_modules`; we use the **protocol + root skil
 
 ### Open from fork #5
 
-- [ ] fallow baselines in CI — fork #11
+- [x] fallow in CI — fork #11: `pnpm analyze` in `pnpm gate`, merge-base via `fetch-depth: 0`
 - [ ] `fallow security` integration — fork #13
 
 ---
@@ -777,13 +777,44 @@ Agent-facing tools should use TOON or compact JSON, minimal default fields, stru
 
 ## Fork #11 — CI/CD
 
-**Status:** Not started
+**Status:** Decided
 
-GitHub Actions; deploy preview probes; no-mistakes pipeline. **Requires fork #13 security gate** in the pipeline before merge/deploy.
+### Decision
 
-### Decisions
+**GitHub Actions runs `pnpm gate` on every PR and push to `main`.** Install via `sfw pnpm install --frozen-lockfile`. Playwright artifacts uploaded on failure. Deploy preview deferred to products with a host.
 
-_To be filled in this fork._
+### CI job (`quality`)
+
+| Step     | Command / action                                        |
+| -------- | ------------------------------------------------------- |
+| Install  | `sfw pnpm install --frozen-lockfile`                    |
+| Browser  | `playwright install chromium --with-deps`               |
+| Gate     | `pnpm gate`                                             |
+| Evidence | Upload `playwright-report/`, `test-results/` on failure |
+
+### `pnpm gate`
+
+```sh
+pnpm typecheck && pnpm lint && pnpm test:agent-policy && pnpm test:unit && pnpm test && pnpm analyze
+```
+
+Local parity before PR. no-mistakes optional for push-time gate — not a repo dependency.
+
+### Agent files (scaffold)
+
+| File                                 | Purpose                     |
+| ------------------------------------ | --------------------------- |
+| `.github/workflows/ci.yml`           | GitHub Actions workflow     |
+| `docs/ci-protocol.md`                | Canonical CI procedure      |
+| `docs/adr/0006-ci-github-actions.md` | Decision record             |
+| `package.json` `ci` script           | Local / Actions entry point |
+
+### Open from fork #11
+
+- [ ] Branch protection on `main` — enable in GitHub Settings (human)
+- [ ] Deploy preview job — when product has host
+- [ ] Security CI job — fork #13
+- [ ] gh-axi in failure triage docs — optional
 
 ---
 
@@ -1018,7 +1049,7 @@ Ideas only — **do not copy code or config from these into `scaffold/`:**
 | 2026-06-21 | scaffold      | Align `AGENTS.md` with agents.md — dev/test/PR sections; nested package AGENTS.md                          |
 | 2026-06-21 | #5            | fallow static analysis; ADR 0002; `pnpm analyze` in full gate; analyze skill                               |
 | 2026-06-21 | #6            | Skills inventory; `docs/skills-protocol.md`; security-review stub; fix skill protocol links                |
-| 2026-06-21 | #10           | MCP protocol; ADR 0005 shell gates canonical; mcp.example.json; AXI/TOON guidance                          |
+| 2026-06-21 | #11           | GitHub Actions CI; `pnpm gate`; ADR 0006; sfw frozen install; Playwright artifacts                         |
 | 2026-06-21 | #9            | Agent suppression hooks; ADR 0004; lefthook agent-policy; Cursor preToolUse block                          |
 | 2026-06-21 | #8            | Context protocol; re-read ladder; optional ponytail; compaction recovery                                   |
 | 2026-06-21 | #7            | Sub-agents protocol; ADR 0003 same gates; orchestrate skill; firstmate no-mistakes registration            |

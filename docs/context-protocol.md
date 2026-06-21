@@ -94,7 +94,7 @@ Do not duplicate ponytail's full ruleset in `AGENTS.md`. Link here; adopt upstre
 | ---------------------------------------------------- | ---------------------------------------------- |
 | TOON / AXI structured CLI output                     | #10 ✓ — [`mcp-protocol.md`](./mcp-protocol.md) |
 | Hooks blocking `eslint-disable` / `@ts-expect-error` | #9 ✓                                           |
-| CI artifact retention                                | #11                                            |
+| CI artifact retention                                | #11 ✓ — Playwright artifacts on failure        |
 
 ## Related
 

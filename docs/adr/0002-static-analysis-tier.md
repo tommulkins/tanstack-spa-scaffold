@@ -12,11 +12,11 @@ Fork #1 (ADR 0001) split fast pre-commit gates from full test suite. ESLint and 
 
 Add a **slow static-analysis tier** using [fallow](https://github.com/fallow-rs/fallow):
 
-| Tier     | When                     | Commands                                                             |
-| -------- | ------------------------ | -------------------------------------------------------------------- |
-| **Fast** | Lefthook pre-commit      | `pnpm typecheck`, `pnpm lint`                                        |
-| **Full** | Before merge / task done | above + `pnpm test` + **`pnpm analyze`**                             |
-| **CI**   | Pull request (fork #11)  | full suite + fallow baselines + `sfw pnpm install --frozen-lockfile` |
+| Tier     | When                          | Commands                                              |
+| -------- | ----------------------------- | ----------------------------------------------------- |
+| **Fast** | Lefthook pre-commit           | `pnpm typecheck`, `pnpm lint`                         |
+| **Full** | Before merge / task done      | above + `pnpm test` + **`pnpm analyze`**              |
+| **CI**   | Pull request / push to `main` | `pnpm gate` — [ADR 0006](./0006-ci-github-actions.md) |
 
 - **`pnpm lint`** — Prettier + ESLint only (unchanged)
 - **`pnpm analyze`** — `fallow audit` with `gate: "new"` (introduced findings only)
