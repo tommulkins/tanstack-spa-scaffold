@@ -27,31 +27,33 @@ pnpm exec playwright install chromium
 
 ## Scripts
 
-| Command          | Purpose                 |
-| ---------------- | ----------------------- |
-| `pnpm dev`       | Web + API in parallel   |
-| `pnpm typecheck` | TypeScript all packages |
-| `pnpm lint`      | Prettier + ESLint       |
-| `pnpm test:unit` | Vitest                  |
-| `pnpm test`      | Playwright e2e          |
-| `pnpm test:all`  | Unit then e2e           |
+| Command          | Purpose                  |
+| ---------------- | ------------------------ |
+| `pnpm dev`       | Web + API in parallel    |
+| `pnpm typecheck` | TypeScript all packages  |
+| `pnpm lint`      | Prettier + ESLint        |
+| `pnpm test:unit` | Vitest                   |
+| `pnpm test`      | Playwright e2e           |
+| `pnpm test:all`  | Unit then e2e            |
+| `pnpm analyze`   | fallow audit (full gate) |
 
-A task is not done until `typecheck`, `lint`, and `test` all exit zero.
+A task is not done until `typecheck`, `lint`, `test`, and `analyze` all exit zero.
 
 ## Agent files
 
-| File                       | Role                                                                                          |
-| -------------------------- | --------------------------------------------------------------------------------------------- |
-| `AGENTS.md`                | Agent instructions ([agents.md](https://agents.md)); nested per package                       |
-| `CLAUDE.md`                | Symlink → `AGENTS.md`                                                                         |
-| `PLAN.md`                  | Current feature plan (kickoff output)                                                         |
-| `DESIGN.md`                | Visual identity ([google-labs-code/design.md](https://github.com/google-labs-code/design.md)) |
-| `CONTEXT.md`               | Ubiquitous language glossary                                                                  |
-| `docs/kickoff-protocol.md` | Kickoff procedure                                                                             |
-| `docs/tdd-protocol.md`     | TDD at the Zod contract boundary                                                              |
-| `docs/debug-protocol.md`   | Self-heal when gates fail                                                                     |
-| `WORKFLOW.md` § Fork #12   | Planned: acceptance scenarios, anti-lazy e2e rules (not implemented yet)                      |
-| `WORKFLOW.md` § Fork #13   | Planned: security review before CI (not implemented yet)                                      |
+| File                               | Role                                                                                          |
+| ---------------------------------- | --------------------------------------------------------------------------------------------- |
+| `AGENTS.md`                        | Agent instructions ([agents.md](https://agents.md)); nested per package                       |
+| `CLAUDE.md`                        | Symlink → `AGENTS.md`                                                                         |
+| `PLAN.md`                          | Current feature plan (kickoff output)                                                         |
+| `DESIGN.md`                        | Visual identity ([google-labs-code/design.md](https://github.com/google-labs-code/design.md)) |
+| `CONTEXT.md`                       | Ubiquitous language glossary                                                                  |
+| `docs/kickoff-protocol.md`         | Kickoff procedure                                                                             |
+| `docs/tdd-protocol.md`             | TDD at the Zod contract boundary                                                              |
+| `docs/static-analysis-protocol.md` | fallow — complexity, dead code, full-tier gate                                                |
+| `docs/debug-protocol.md`           | Self-heal when gates fail                                                                     |
+| `WORKFLOW.md` § Fork #12           | Planned: acceptance scenarios, anti-lazy e2e rules (not implemented yet)                      |
+| `WORKFLOW.md` § Fork #13           | Planned: security review before CI (not implemented yet)                                      |
 
 ## Kickoff
 

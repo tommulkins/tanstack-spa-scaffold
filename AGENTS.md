@@ -44,15 +44,20 @@ pnpm exec playwright install chromium
 pnpm typecheck
 pnpm lint
 pnpm test
+pnpm analyze
 ```
 
 Do not report a task complete with any gate failing. If a failure looks unrelated, say so and name the failing test.
 
-| Command          | Scope                         |
-| ---------------- | ----------------------------- |
-| `pnpm test:unit` | Vitest in all packages        |
-| `pnpm test`      | Playwright e2e (`tests/e2e/`) |
-| `pnpm test:all`  | Unit then e2e                 |
+| Command               | Scope                                               |
+| --------------------- | --------------------------------------------------- |
+| `pnpm test:unit`      | Vitest in all packages                              |
+| `pnpm test`           | Playwright e2e (`tests/e2e/`)                       |
+| `pnpm test:all`       | Unit then e2e                                       |
+| `pnpm analyze`        | fallow audit — new issues on changed code only      |
+| `pnpm analyze:report` | fallow dead-code + health (informational, optional) |
+
+Static analysis details: [`docs/static-analysis-protocol.md`](./docs/static-analysis-protocol.md). Tier placement: [ADR 0002](./docs/adr/0002-static-analysis-tier.md).
 
 **Per package:**
 
@@ -95,7 +100,7 @@ Follow [`docs/kickoff-protocol.md`](./docs/kickoff-protocol.md). No feature code
 
 When context compacts, re-read `AGENTS.md`, `PLAN.md`, and `CONTEXT.md`. For UI, also re-read `DESIGN.md`.
 
-Skills in [`.agents/skills/`](./.agents/skills/): **grill-with-docs** (kickoff), **tdd** (red-green at contracts), **verify** (gates + self-heal on failure).
+Skills in [`.agents/skills/`](./.agents/skills/): **grill-with-docs** (kickoff), **tdd** (red-green at contracts), **verify** (gates + self-heal on failure), **analyze** (fallow static analysis).
 
 ## Code style and conventions
 
@@ -110,13 +115,13 @@ Reference slice: Notes (`packages/schemas/src/note.ts` → API → `apps/web/src
 
 ## PR instructions
 
-- Run the **full gate** before opening or updating a PR: `pnpm typecheck`, `pnpm lint`, and `pnpm test`.
-- Pre-commit (Lefthook) runs **fast gates only** (`typecheck` + `lint`) — see [`docs/adr/0001-tiered-quality-gates.md`](./docs/adr/0001-tiered-quality-gates.md). E2e is not in the hook; you must run `pnpm test` explicitly.
+- Run the **full gate** before opening or updating a PR: `pnpm typecheck`, `pnpm lint`, `pnpm test`, and `pnpm analyze`.
+- Pre-commit (Lefthook) runs **fast gates only** (`typecheck` + `lint`) — see [ADR 0001](./docs/adr/0001-tiered-quality-gates.md) and [ADR 0002](./docs/adr/0002-static-analysis-tier.md). E2e and fallow are not in the hook; run `pnpm test` and `pnpm analyze` explicitly.
 - Flag new dependencies in the PR/summary; install only via `sfw pnpm`.
 - Only create commits or PRs when the human asks.
 
 ## Recovery
 
 ```sh
-git stash && git checkout main && sfw pnpm install && pnpm typecheck && pnpm lint && pnpm test
+git stash && git checkout main && sfw pnpm install && pnpm typecheck && pnpm lint && pnpm test && pnpm analyze
 ```

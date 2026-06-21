@@ -29,7 +29,7 @@ The agent runs the feedback loop; the human steers architecture and approves mer
 
 ---
 
-## Completed (Forks #1–#4 + scaffold)
+## Completed (Forks #1–#5 + scaffold)
 
 ### Stack (locked in)
 
@@ -93,6 +93,14 @@ pnpm exec playwright install chromium
 - `.agents/skills/verify/SKILL.md` — run gates + heal on red
 - `reports/dossiers/` — gitignored session evidence
 
+### Fork #5 (Static analysis)
+
+- [fallow](https://github.com/fallow-rs/fallow) — `pnpm analyze` (audit, new-issues gate), `pnpm analyze:report` (informational)
+- `docs/static-analysis-protocol.md`, ADR 0002, `.fallowrc.json`, `.agents/skills/analyze/`
+- Full gate: `typecheck` + `lint` + `test` + **`analyze`**
+
+---
+
 ### Doc naming (fork #2 patch)
 
 - **`PLAN.md`** — feature kickoff (goal, plan, verification, recovery)
@@ -100,7 +108,7 @@ pnpm exec playwright install chromium
 
 ---
 
-## Resolved (forks #1–#4)
+## Resolved (forks #1–#5)
 
 | Topic               | Decision                                                                        |
 | ------------------- | ------------------------------------------------------------------------------- |
@@ -111,7 +119,7 @@ pnpm exec playwright install chromium
 | Skill symlinks      | Run `./scripts/link-agent-skills.sh` after clone                                |
 | `ai-workflows` repo | Optional later; `WORKFLOW.md` in scaffold for now                               |
 
-No open carry-forward items — proceed to **Fork #5**.
+No open carry-forward items — proceed to **Fork #6**.
 
 ---
 
@@ -131,26 +139,27 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 
 ---
 
-### Fork #5 — Linters, formatters, static analysis ← **START HERE**
+### Fork #5 — Linters, formatters, static analysis ✓
 
-**Goal:** Tiered static analysis beyond ESLint/Prettier — fallow for complexity and dead code.
-
-**Suggested topics:**
-
-- Tool: [fallow](https://github.com/fallow-rs/fallow)
-- Cyclomatic complexity, dead code thresholds
-- Fast vs slow gate placement (extends ADR 0001)
-
-**Prompt for new session:**
-
-> Read `WORKFLOW.md` and `SESSION-HANDOFF.md`. We're on **Fork #5 — Linters, formatters, static analysis**. Propose decisions, keep it succinct, update WORKFLOW.md when we agree.
+**Decided:** ESLint/Prettier (fast) + fallow (full). `pnpm analyze` gates new complexity/dead-code/dupes. Delivered: ADR 0002, static-analysis protocol, analyze skill.
 
 ---
 
-### Fork #6 — Skills inventory
+### Fork #6 — Skills inventory ← **START HERE**
 
-- Beyond `grill-with-docs`: verify, **security-review** (fork #13), review, project-kickoff
-- Optional harness symlinks
+**Goal:** Consolidate project skills and optional harness wiring.
+
+**Suggested topics:**
+
+- Inventory: grill-with-docs, tdd, verify, analyze, security-review (#13 planned)
+- Optional `.cursor/skills` / `.claude/skills` symlinks (`./scripts/link-agent-skills.sh`)
+- Defer duplicate content — skills point to protocols
+
+**Prompt for new session:**
+
+> Read `WORKFLOW.md` and `SESSION-HANDOFF.md`. We're on **Fork #6 — Skills inventory**. Propose decisions, keep it succinct, update WORKFLOW.md when we agree.
+
+---
 
 ### Fork #7 — Sub-agents and quality gates
 
@@ -238,7 +247,7 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 2. ~~Kickoff / grill-with-docs~~ ✓
 3. ~~TDD + Zod~~ ✓
 4. ~~Find bugs, deal with them~~ ✓
-5. Linters / fallow
+5. ~~Linters / fallow~~ ✓
 6. Skills inventory
 7. Sub-agents
 8. Optimizations / ponytail

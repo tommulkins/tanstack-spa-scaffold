@@ -4,7 +4,7 @@ Living document for a rigorous, agent-assisted workflow: **new project or featur
 
 Each forked discussion adds decisions here. Prefer succinct entries; link out for detail.
 
-> **New session?** Read [`SESSION-HANDOFF.md`](./SESSION-HANDOFF.md) first — current state, repos, and **Fork #5** pickup prompt.
+> **New session?** Read [`SESSION-HANDOFF.md`](./SESSION-HANDOFF.md) first — current state, repos, and **Fork #6** pickup prompt.
 
 ---
 
@@ -509,13 +509,47 @@ Playwright: cite trace zip from `test-results/`; fork #12 adds deeper trace-read
 
 ## Fork #5 — Linters, formatters, static analysis
 
-**Status:** Not started
+**Status:** Decided
 
-Tooling candidate: [fallow](https://github.com/fallow-rs/fallow)
+### Decision
 
-### Decisions
+**Two-layer static checks:** ESLint + Prettier (file lint, fast tier) and [fallow](https://github.com/fallow-rs/fallow) (codebase analyze, full tier).
 
-_To be filled in this fork._
+| Command               | Tool                         | Tier                | Gates           |
+| --------------------- | ---------------------------- | ------------------- | --------------- |
+| `pnpm lint`           | Prettier + ESLint            | Fast (pre-commit)   | yes             |
+| `pnpm analyze`        | `fallow audit`               | Full (before merge) | new issues only |
+| `pnpm analyze:report` | `fallow dead-code`, `health` | Optional triage     | no              |
+
+### fallow scope (full tier)
+
+- **Complexity** — cyclomatic/cognitive thresholds in `.fallowrc.json` (15 / 12 defaults)
+- **Dead code** — unused exports, files, dependencies (introduced changes gate via audit)
+- **Duplication** — clone families touching changed files
+- **Not in fork #5:** `fallow security` → fork #13
+
+### Gate policy
+
+- **`fallow audit`** with `audit.gate: "new-only"` — fail only on findings **introduced** vs merge-base; inherited debt is context
+- **Not in Lefthook** — keeps pre-commit fast (ADR 0001 + ADR 0002)
+- **Agent done** — `pnpm analyze` added to full gate alongside typecheck, lint, test
+
+### Agent files (scaffold)
+
+| File                                    | Purpose                                        |
+| --------------------------------------- | ---------------------------------------------- |
+| `.fallowrc.json`                        | Thresholds, audit gate, e2e script entry point |
+| `docs/static-analysis-protocol.md`      | Canonical procedure                            |
+| `docs/adr/0002-static-analysis-tier.md` | Tier placement                                 |
+| `.agents/skills/analyze/SKILL.md`       | Discovery wrapper                              |
+| `AGENTS.md`                             | Done definition + PR instructions              |
+
+Fallow ships MCP/LSP/skills in `node_modules`; we use the **protocol + root skill pointer** pattern (same as kickoff/TDD).
+
+### Open from fork #5
+
+- [ ] fallow baselines in CI — fork #11
+- [ ] `fallow security` integration — fork #13
 
 ---
 
@@ -816,4 +850,5 @@ Ideas only — **do not copy code or config from these into `scaffold/`:**
 | 2026-06-21 | #4            | Self-heal loop on red gates; dossiers; verify skill; escalate rules                                        |
 | 2026-06-21 | carry-forward | Closed open items from forks #1–#3; ADR 0001 tiered gates; skill symlinks; plan approval = PLAN.md         |
 | 2026-06-21 | scaffold      | Align `AGENTS.md` with agents.md — dev/test/PR sections; nested package AGENTS.md                          |
+| 2026-06-21 | #5            | fallow static analysis; ADR 0002; `pnpm analyze` in full gate; analyze skill                               |
 | 2026-06-21 | #13 plan      | Security review fork — diff review, supply chain, slow gate before CI                                      |

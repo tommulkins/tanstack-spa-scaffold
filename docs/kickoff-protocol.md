@@ -60,14 +60,14 @@ Produce ordered tasks in `PLAN.md` § Plan.
 
 Add § Verification:
 
-- Root commands: `pnpm typecheck`, `pnpm lint`, `pnpm test`
+- Root commands: `pnpm typecheck`, `pnpm lint`, `pnpm test`, `pnpm analyze`
 - Named unit and e2e tests
 - **Acceptance scenarios** (Gherkin-style bullets in § Acceptance scenarios) — at least one happy path and one failure path per feature; human approves before implement (full rules: fork #12 in `WORKFLOW.md`)
 
 Add § Recovery (minimum):
 
 ```sh
-git stash && git checkout main && sfw pnpm install && pnpm typecheck && pnpm lint && pnpm test
+git stash && git checkout main && sfw pnpm install && pnpm typecheck && pnpm lint && pnpm test && pnpm analyze
 ```
 
 **Stop.** Wait for human approval. Set `approved: [x] yes` in § Plan only after explicit go-ahead. This checkbox is the canonical gate — optional GitHub issues for team tracking do not replace it.

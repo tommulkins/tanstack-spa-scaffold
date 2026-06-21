@@ -87,4 +87,4 @@ Use it as a template; replace with product features during kickoff.
 
 ## Done
 
-Same as `AGENTS.md`: from repo root, `pnpm typecheck`, `pnpm lint`, and `pnpm test` must exit zero.
+Same as `AGENTS.md`: from repo root, `pnpm typecheck`, `pnpm lint`, `pnpm test`, and `pnpm analyze` must exit zero.

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
+  "entry": ["scripts/e2e-webserver.mjs"],
+  "audit": {
+    "gate": "new-only"
+  },
+  "health": {
+    "maxCyclomatic": 15,
+    "maxCognitive": 12
+  },
+  "ignoreExportsUsedInFile": true
+}
