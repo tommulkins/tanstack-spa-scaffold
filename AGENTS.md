@@ -98,7 +98,7 @@ Never weaken tests or assertions to green a gate.
 
 Follow [`docs/kickoff-protocol.md`](./docs/kickoff-protocol.md). No feature code until `PLAN.md` § Plan has `approved: [x] yes`.
 
-When context compacts, re-read `AGENTS.md`, `PLAN.md`, and `CONTEXT.md`. For UI, also re-read `DESIGN.md`.
+When context compacts, follow [`docs/context-protocol.md`](./docs/context-protocol.md) — re-read `AGENTS.md`, `PLAN.md`, and `CONTEXT.md`; for UI, also `DESIGN.md`. Do not rely on chat history.
 
 ## Skills
 

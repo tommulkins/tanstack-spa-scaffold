@@ -29,7 +29,7 @@ The agent runs the feedback loop; the human steers architecture and approves mer
 
 ---
 
-## Completed (Forks #1–#7 + scaffold)
+## Completed (Forks #1–#8 + scaffold)
 
 ### Stack (locked in)
 
@@ -117,7 +117,15 @@ pnpm exec playwright install chromium
 
 ---
 
-## Resolved (forks #1–#7)
+### Fork #8 (Optimizations)
+
+- `docs/context-protocol.md` — re-read ladder, compaction recovery, token habits
+- ponytail optional (harness plugin, not vendored); baseline minimal-code rules stay in `AGENTS.md`
+- TOON/AXI deferred to fork #10
+
+---
+
+## Resolved (forks #1–#8)
 
 | Topic               | Decision                                                                        |
 | ------------------- | ------------------------------------------------------------------------------- |
@@ -128,7 +136,7 @@ pnpm exec playwright install chromium
 | Skill symlinks      | Run `./scripts/link-agent-skills.sh` after clone                                |
 | `ai-workflows` repo | Optional later; `WORKFLOW.md` in scaffold for now                               |
 
-No open carry-forward items — proceed to **Fork #8**.
+No open carry-forward items — proceed to **Fork #9**.
 
 ---
 
@@ -176,25 +184,21 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 
 ---
 
-### Fork #8 — Optimizations ← **START HERE**
+### Fork #8 — Optimizations ✓
 
-**Goal:** Token and context efficiency tooling.
-
-**Suggested topics:**
-
-- [ponytail](https://github.com/DietrichGebert/ponytail) for context trimming
-- When to compact vs re-read `PLAN.md` / protocols
-
-**Prompt for new session:**
-
-> Read `WORKFLOW.md` and `SESSION-HANDOFF.md`. We're on **Fork #8 — Optimizations**. Propose decisions, keep it succinct, update WORKFLOW.md when we agree.
+**Decided:** Repo files over chat; re-read ladder in context-protocol; ponytail optional for implement; gates never skipped for tokens.
 
 ---
 
-### Fork #9 — Hooks (prevent agent false-positives)
+### Fork #9 — Hooks (prevent agent false-positives) ← **START HERE**
 
-- Cursor hooks, lefthook extensions
-- Block `@ts-expect-error`, `eslint-disable`, etc.
+**Goal:** Cursor hooks, lefthook extensions — block `@ts-expect-error`, `eslint-disable`, etc.
+
+**Prompt for new session:**
+
+> Read `WORKFLOW.md` and `SESSION-HANDOFF.md`. We're on **Fork #9 — Hooks**. Propose decisions, keep it succinct, update WORKFLOW.md when we agree.
+
+---
 
 ### Fork #10 — MCPs
 
@@ -271,7 +275,7 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 5. ~~Linters / fallow~~ ✓
 6. ~~Skills inventory~~ ✓
 7. ~~Sub-agents~~ ✓
-8. Optimizations / ponytail
+8. ~~Optimizations / ponytail~~ ✓
 9. Hooks
 10. MCPs
 11. CI/CD

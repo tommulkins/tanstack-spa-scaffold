@@ -4,7 +4,7 @@ Living document for a rigorous, agent-assisted workflow: **new project or featur
 
 Each forked discussion adds decisions here. Prefer succinct entries; link out for detail.
 
-> **New session?** Read [`SESSION-HANDOFF.md`](./SESSION-HANDOFF.md) first — current state, repos, and **Fork #8** pickup prompt.
+> **New session?** Read [`SESSION-HANDOFF.md`](./SESSION-HANDOFF.md) first — current state, repos, and **Fork #9** pickup prompt.
 
 ---
 
@@ -326,7 +326,7 @@ approved: [ ] yes
 <!-- exact commands to return to last green state -->
 ```
 
-When context compacts, agent re-reads `PLAN.md` + `AGENTS.md` before continuing — do not rely on chat history. For UI work, also re-read `DESIGN.md`.
+When context compacts, follow [`context-protocol.md`](./context-protocol.md) — re-read `PLAN.md` + `AGENTS.md` before continuing; do not rely on chat history. For UI work, also re-read `DESIGN.md`.
 
 ### Recovery commands (required in every plan)
 
@@ -659,13 +659,49 @@ Video demo: **single-agent** unless intentionally showing parallel crew.
 
 ## Fork #8 — Optimizations
 
-**Status:** Not started
+**Status:** Decided
 
-Tooling candidate: [ponytail](https://github.com/DietrichGebert/ponytail)
+### Decision
 
-### Decisions
+**Repo files beat chat for memory; minimal code is always on; ponytail is optional.**
 
-_To be filled in this fork._
+Token savings come from re-reading the right files after compaction, targeted exploration, and dossiers — not from skipping gates or tests.
+
+### Re-read ladder
+
+Formalized in [`docs/context-protocol.md`](./docs/context-protocol.md):
+
+- Session start → `AGENTS.md`
+- Feature work → `PLAN.md`, `CONTEXT.md`
+- UI → + `DESIGN.md`
+- Active phase → one protocol only (kickoff / tdd / debug / static / subagents)
+
+Compaction = hard reset; re-run ladder; confirm plan approval before more feature code.
+
+### Minimal implementation
+
+Already in `AGENTS.md`: smallest correct diff, schema-first TDD, full gate before done. This is the baseline — no plugin required.
+
+### ponytail (optional)
+
+[ponytail](https://github.com/DietrichGebert/ponytail) — optional harness plugin for YAGNI / stdlib-first during **implement**. Not vendored; not a project dependency. Never cuts validation, security, accessibility, or tests. Install per harness upstream docs; `/ponytail-review` is advisory — verify still required.
+
+### Token habits
+
+- Targeted reads; dossiers for failures; analyze JSON for pass/fail
+- TOON/AXI CLI output → fork #10
+
+### Agent files (scaffold)
+
+| File                       | Purpose                                       |
+| -------------------------- | --------------------------------------------- |
+| `docs/context-protocol.md` | Compaction, re-read ladder, ponytail adoption |
+| `AGENTS.md`                | Links context protocol on compaction          |
+
+### Open from fork #8
+
+- [ ] Pin ponytail version in video demo notes — optional
+- [ ] Benchmark ponytail on Notes slice — optional experiment
 
 ---
 
@@ -889,6 +925,8 @@ Hooks (#9), MCPs (#10), sub-agents (#7) wire in as adopted.
 
 ### Token efficiency
 
+Repo files (`AGENTS.md`, `PLAN.md`, protocols) are durable memory; chat is not. Re-read ladder: [`docs/context-protocol.md`](./docs/context-protocol.md). Optional implement-phase plugin: [ponytail](https://github.com/DietrichGebert/ponytail). Structured CLI I/O (TOON): fork #10.
+
 ### Git workflow
 
 - **GitButler** for virtual branches and parallel agent work — [docs](https://docs.gitbutler.com/guide)
@@ -930,5 +968,6 @@ Ideas only — **do not copy code or config from these into `scaffold/`:**
 | 2026-06-21 | scaffold      | Align `AGENTS.md` with agents.md — dev/test/PR sections; nested package AGENTS.md                          |
 | 2026-06-21 | #5            | fallow static analysis; ADR 0002; `pnpm analyze` in full gate; analyze skill                               |
 | 2026-06-21 | #6            | Skills inventory; `docs/skills-protocol.md`; security-review stub; fix skill protocol links                |
+| 2026-06-21 | #8            | Context protocol; re-read ladder; optional ponytail; compaction recovery                                   |
 | 2026-06-21 | #7            | Sub-agents protocol; ADR 0003 same gates; orchestrate skill; firstmate no-mistakes registration            |
 | 2026-06-21 | #13 plan      | Security review fork — diff review, supply chain, slow gate before CI                                      |
