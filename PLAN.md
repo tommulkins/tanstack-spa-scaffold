@@ -12,7 +12,11 @@
 
 ## Constraints
 
-<!-- stack, timeline, deploy, etc. -->
+<!-- stack, timeline, deploy, security, etc. -->
+
+## Security constraints
+
+<!-- fork #13: data sensitivity, trust boundaries, explicit non-goals for auth/secrets — optional until feature needs them -->
 
 ## Architecture
 

@@ -25,7 +25,7 @@ Demonstrate in video form a repeatable workflow for senior engineers:
 1. Scaffold a greenfield project with hard quality gates baked in
 2. Clarify the goal, write the plan, implement, verify
 3. Catch bugs with TDD and shared schemas
-4. Pass static analysis, review, e2e, and CI before prod
+4. Pass static analysis, **security review**, e2e, and CI before prod
 
 **Principle:** The agent runs the feedback loop; the human steers architecture and approves merges.
 
@@ -51,6 +51,7 @@ Add during feature work, not at scaffold time:
 
 - Auth, database, i18n, full UI kit
 - fallow, ponytail, custom MCPs, CI (later forks)
+- Dedicated SAST/DAST stack (fork #13 — security review)
 - Third-party deploy/vendor lock-in
 
 ### Package management (decided)
@@ -522,7 +523,9 @@ _To be filled in this fork._
 
 **Status:** Not started
 
-Define project skills beyond `/grill-me` (e.g. project-kickoff, verify, review). Overlaps with agent files — see [Agent instruction files](#agent-instruction-files-decided).
+Define project skills beyond `/grill-me` (e.g. project-kickoff, verify, **security-review**, review). Overlaps with agent files — see [Agent instruction files](#agent-instruction-files-decided).
+
+**Planned for fork #13:** `.agents/skills/security-review/` — see § Fork #13.
 
 ### Decisions
 
@@ -578,7 +581,7 @@ _To be filled in this fork._
 
 **Status:** Not started
 
-GitHub Actions; deploy preview probes; no-mistakes pipeline.
+GitHub Actions; deploy preview probes; no-mistakes pipeline. **Requires fork #13 security gate** in the pipeline before merge/deploy.
 
 ### Decisions
 
@@ -680,11 +683,99 @@ Extend Notes demo:
 
 ---
 
+## Fork #13 — Security review
+
+**Status:** Planned (not started)
+
+**Goal:** Mandatory security pass before merge — supply chain, code diff review, and API/web baseline checks so agents cannot skip security the way they skip rigorous tests.
+
+**Pipeline position:** after static analysis (#5) and feature verification (#4 / #12); **before CI/CD (#11)** and production. Not in fast pre-commit (ADR 0001).
+
+### Problem
+
+`sfw` (fork #1) covers install-time supply chain only. Nothing in the workflow yet requires a **security review of the diff**, secrets hygiene, or API hardening checks before merge.
+
+### Planned decisions
+
+#### 1. When security review runs
+
+| Trigger                                   | Required                                |
+| ----------------------------------------- | --------------------------------------- |
+| Feature complete (before merge / PR)      | yes — slow gate                         |
+| Any dependency add/change                 | yes — re-run supply-chain + diff review |
+| Architecture / auth / PII boundary change | yes — human sign-off on findings        |
+| Docs-only change                          | skip unless touching security protocol  |
+
+Runs after `pnpm typecheck`, `pnpm lint`, `pnpm test` green — security is an additional gate, not a substitute.
+
+#### 2. Layers
+
+| Layer                 | Tool / practice                                              | Notes                                                             |
+| --------------------- | ------------------------------------------------------------ | ----------------------------------------------------------------- |
+| **Supply chain**      | `sfw pnpm` (decided)                                         | Install/add/update only; flag new deps in summary                 |
+| **Diff review**       | Security-review agent / skill                                | Read-only pass on branch or uncommitted diff; structured findings |
+| **Static (optional)** | ESLint security plugins, Semgrep, or fallow-adjacent rules   | Decide in fork #13; tier with #5                                  |
+| **API baseline**      | Zod on all inputs; no stack traces in 4xx/5xx; CORS explicit | Align with existing scaffold                                      |
+| **Secrets**           | `.env` gitignored; no tokens in dossiers, logs, or commits   | Hook reinforcement in fork #9                                     |
+
+#### 3. Kickoff integration
+
+Add optional § **Security constraints** to `PLAN.md` (filled at grill):
+
+- Data sensitivity (PII, auth, payments)
+- Trust boundaries (browser ↔ API ↔ third parties)
+- Non-goals (“no auth in v1” is explicit)
+
+Agent must not introduce auth/secrets/storage without plan approval.
+
+#### 4. Findings and escalation
+
+- Findings recorded in a **security dossier** (extends fork #4 pattern) or harness-native review output
+- **Critical / high:** stop — human must acknowledge before merge
+- **Medium / low:** fix or document accepted risk in `docs/adr/` if surprising
+- Same retry budget as debug protocol for fixable code issues; no silent dismiss
+
+#### 5. Deliverables (fork #13 session)
+
+| Artifact                                  | Purpose                                      |
+| ----------------------------------------- | -------------------------------------------- |
+| `docs/security-protocol.md`               | When to run, layers, escalation              |
+| `.agents/skills/security-review/SKILL.md` | Discovery → protocol + diff-review procedure |
+| `PLAN.md` + kickoff template              | § Security constraints stub                  |
+| `AGENTS.md`                               | Security gate in PR / done definition        |
+| Tier placement                            | Slow gate in ADR 0001 or ADR 0002            |
+| `WORKFLOW.md` § Fork #13                  | Mark decided                                 |
+
+#### 6. Explicitly not in fork #13 base scope
+
+- Full penetration test / bug bounty
+- Auth implementation (product feature, not scaffold)
+- SOC2/compliance checklists
+
+### Open until fork #13
+
+- [ ] Harness-native security subagent vs protocol-only (Cursor `security-review` vs agent-agnostic checklist)
+- [ ] Additional SAST tool beyond ESLint + manual review
+- [ ] Security findings format (markdown dossier vs SARIF vs AXI/TOON)
+
+---
+
+## Delivery pipeline (fork order vs run order)
+
+Fork **numbers** are discussion order; **run order** for a feature slice:
+
+```
+kickoff (#2) → implement (#3) → verify (#4) → lint (#5) → security (#13) → CI (#11) → prod
+                                                      ↘ acceptance depth (#12) ↗
+```
+
+Hooks (#9), MCPs (#10), sub-agents (#7) wire in as adopted.
+
+---
+
 ## Cross-cutting notes
 
 ### Token efficiency
-
-- **TOON** for structured agent I/O where applicable ([AXI principle #1](https://axi.md/))
 
 ### Git workflow
 
@@ -725,4 +816,4 @@ Ideas only — **do not copy code or config from these into `scaffold/`:**
 | 2026-06-21 | #4            | Self-heal loop on red gates; dossiers; verify skill; escalate rules                                        |
 | 2026-06-21 | carry-forward | Closed open items from forks #1–#3; ADR 0001 tiered gates; skill symlinks; plan approval = PLAN.md         |
 | 2026-06-21 | scaffold      | Align `AGENTS.md` with agents.md — dev/test/PR sections; nested package AGENTS.md                          |
-| 2026-06-21 | #12 plan      | Acceptance scenarios + anti-lazy e2e; PLAN.md § scenarios; fork #12 deliverables documented                |
+| 2026-06-21 | #13 plan      | Security review fork — diff review, supply chain, slow gate before CI                                      |

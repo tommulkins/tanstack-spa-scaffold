@@ -22,12 +22,12 @@ Resolve before moving on:
 1. One-sentence goal
 2. Explicit non-goals
 3. User and happy path
-4. Fixed constraints (stack, auth, deploy)
+4. Fixed constraints (stack, auth, deploy, **security / data sensitivity**)
 5. Anti-patterns from past work
 6. Definition of done (named tests or observable behavior)
 7. Recovery if the session breaks
 
-Write answers into `PLAN.md` (Goal, Non-goals, Constraints, Anti-patterns).
+Write answers into `PLAN.md` (Goal, Non-goals, Constraints, Anti-patterns). Add § Security constraints when the feature touches auth, PII, or trust boundaries (full rules: fork #13).
 
 If the question is answerable from the repo, explore the codebase instead of asking.
 

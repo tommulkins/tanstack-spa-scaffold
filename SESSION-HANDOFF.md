@@ -149,7 +149,7 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 
 ### Fork #6 — Skills inventory
 
-- Beyond `grill-with-docs`: verify, review, project-kickoff
+- Beyond `grill-with-docs`: verify, **security-review** (fork #13), review, project-kickoff
 - Optional harness symlinks
 
 ### Fork #7 — Sub-agents and quality gates
@@ -193,6 +193,22 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 
 > Read `WORKFLOW.md` § Fork #12 and `SESSION-HANDOFF.md`. Implement acceptance rigor — PLAN scenarios, e2e protocol, Notes reject e2e, update WORKFLOW when decided.
 
+### Fork #13 — Security review
+
+**Goal:** Mandatory security pass before merge — supply chain + diff review + API baseline.
+
+**Planned (see `WORKFLOW.md` § Fork #13):**
+
+- Slow gate after lint/tests, before CI (#11)
+- `docs/security-protocol.md`, `.agents/skills/security-review/`
+- `PLAN.md` § Security constraints at kickoff
+- Critical/high findings block merge until human ack
+- Builds on `sfw` (fork #1) and debug dossiers (fork #4)
+
+**Prompt for fork #13 session:**
+
+> Read `WORKFLOW.md` § Fork #13 and `SESSION-HANDOFF.md`. Implement security review — protocol, skill, PLAN stub, AGENTS.md gate; update WORKFLOW when decided.
+
 ---
 
 ## Cross-cutting (apply across forks)
@@ -230,6 +246,7 @@ Discuss **one fork per session**. After each, patch `WORKFLOW.md` § Decisions +
 10. MCPs
 11. CI/CD
 12. E2E + Vitest conventions
+13. Security review
 
 ---
 

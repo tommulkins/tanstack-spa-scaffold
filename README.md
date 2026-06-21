@@ -51,6 +51,7 @@ A task is not done until `typecheck`, `lint`, and `test` all exit zero.
 | `docs/tdd-protocol.md`     | TDD at the Zod contract boundary                                                              |
 | `docs/debug-protocol.md`   | Self-heal when gates fail                                                                     |
 | `WORKFLOW.md` § Fork #12   | Planned: acceptance scenarios, anti-lazy e2e rules (not implemented yet)                      |
+| `WORKFLOW.md` § Fork #13   | Planned: security review before CI (not implemented yet)                                      |
 
 ## Kickoff
 
