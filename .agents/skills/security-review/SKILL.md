@@ -9,7 +9,7 @@ Follow [`docs/security-protocol.md`](../../../docs/security-protocol.md).
 ## Prerequisites
 
 - **verify** green — `pnpm gate` (typecheck, lint, test, analyze)
-- Dependency changes installed only via `sfw pnpm` and flagged in summary
+- Dependency changes flagged in summary; prefer `sfw pnpm` when Socket Firewall is available
 
 ## Steps
 

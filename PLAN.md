@@ -54,5 +54,5 @@ Required before implement — at least one **Happy** and one **Reject** per user
 ## Recovery
 
 ```sh
-git stash && git checkout main && sfw pnpm install && pnpm gate
+git stash && git checkout main && pnpm install && pnpm gate
 ```

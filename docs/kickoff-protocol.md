@@ -67,7 +67,7 @@ Add § Verification:
 Add § Recovery (minimum):
 
 ```sh
-git stash && git checkout main && sfw pnpm install && pnpm gate
+git stash && git checkout main && pnpm install && pnpm gate
 ```
 
 **Stop.** Wait for human approval. Set `approved: [x] yes` in § Plan only after explicit go-ahead. This checkbox is the canonical gate — optional GitHub issues for team tracking do not replace it.

@@ -8,6 +8,7 @@ const webDir = path.join(root, 'apps/web');
 process.env.API_HOST ??= '127.0.0.1';
 process.env.API_PORT ??= '3101';
 process.env.WEB_PORT ??= '4173';
+process.env.CI ??= 'true';
 process.env.API_PROXY_TARGET = `http://${process.env.API_HOST}:${process.env.API_PORT}`;
 
 const bin = (packageDir, name) =>
@@ -16,7 +17,11 @@ const bin = (packageDir, name) =>
 const api = spawn(
   bin('packages/api', 'tsx'),
   [path.join(root, 'packages/api/src/index.ts')],
-  { cwd: root, env: process.env, stdio: 'inherit' },
+  {
+    cwd: root,
+    env: process.env,
+    stdio: ['ignore', 'inherit', 'inherit'],
+  },
 );
 
 const web = spawn(
@@ -25,7 +30,12 @@ const web = spawn(
     `${bin('apps/web', 'vite')} build`,
     `${bin('apps/web', 'vite')} preview --host 127.0.0.1 --port ${process.env.WEB_PORT}`,
   ].join(' && '),
-  { cwd: webDir, env: process.env, stdio: 'inherit', shell: true },
+  {
+    cwd: webDir,
+    env: process.env,
+    stdio: ['ignore', 'inherit', 'inherit'],
+    shell: true,
+  },
 );
 
 const children = [api, web];

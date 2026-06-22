@@ -37,8 +37,9 @@ const server = spawn('node', ['scripts/e2e-webserver.mjs'], {
     ...process.env,
     API_PORT: apiPort,
     WEB_PORT: webPort,
+    CI: 'true',
   },
-  stdio: 'inherit',
+  stdio: ['ignore', 'inherit', 'inherit'],
 });
 
 try {
@@ -59,8 +60,10 @@ try {
   );
 
   playwright.on('close', (code) => {
+    server.once('close', () => {
+      process.exit(code ?? 0);
+    });
     server.kill('SIGTERM');
-    process.exit(code ?? 0);
   });
 } catch (error) {
   server.kill('SIGTERM');

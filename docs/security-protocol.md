@@ -6,7 +6,7 @@ Any harness can follow this file. Optional: invoke a **readonly** security-revie
 
 ## Principle
 
-**Security is a slow gate after `pnpm gate` green, before PR or merge.** `sfw` covers install-time supply chain; this protocol covers the **diff**, secrets, and API/web baseline.
+**Security is a slow gate after `pnpm gate` green, before PR or merge.** [Socket Firewall (`sfw`)](https://socket.dev) is recommended for install-time supply chain screening; this protocol covers the **diff**, secrets, and API/web baseline.
 
 ## When to run
 
@@ -29,7 +29,7 @@ Not in Lefthook pre-commit (ADR 0001). Not a separate CI job in base scaffold â€
 
 | Layer                 | Mechanism                                      | Notes                                   |
 | --------------------- | ---------------------------------------------- | --------------------------------------- |
-| **Supply chain**      | `sfw pnpm` install/add/update                  | Flag new deps in PR summary             |
+| **Supply chain**      | Prefer `sfw pnpm` install/add/update           | Flag new deps in PR summary             |
 | **Secrets**           | `pnpm security:check`                          | Grep staged files; block `.env` commits |
 | **Diff review**       | Checklist below (+ optional readonly subagent) | Branch or uncommitted diff              |
 | **API baseline**      | Zod on inputs; generic 4xx; explicit CORS      | See checklist                           |
@@ -54,9 +54,9 @@ Review `git diff origin/main...HEAD` (or uncommitted diff). Record findings in a
 
 ### Supply chain
 
-- [ ] New/changed dependencies installed only via `sfw pnpm`
+- [ ] New/changed dependencies installed with `sfw pnpm` when Socket Firewall is available
 - [ ] New deps justified in PR/summary; lockfile updated
-- [ ] No `npm` / `yarn` / bare `pnpm` for registry installs
+- [ ] No ad-hoc `npm` / `yarn` â€” use `pnpm` (prefer `sfw pnpm` for registry commands)
 
 ### Secrets
 

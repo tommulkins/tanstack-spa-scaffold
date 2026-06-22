@@ -30,4 +30,4 @@ Config: `.fallowrc.json`. Cache: `.fallow/` (gitignored).
 
 - Agents get structured JSON evidence for complexity and dead-code regressions
 - Inherited monorepo debt does not block every PR — only **new** findings gate
-- One additional devDependency (`fallow`); install via `sfw pnpm`
+- One additional devDependency (`fallow`); prefer `sfw pnpm` when Socket Firewall is available

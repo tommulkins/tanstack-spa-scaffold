@@ -2,9 +2,20 @@
 
 Agent instructions for this repo. Format: [agents.md](https://agents.md).
 
-Greenfield monorepo — React SPA (`apps/web`), Hono API (`packages/api`), shared Zod contracts (`packages/schemas`). Human-oriented setup lives in [`README.md`](./README.md).
+Greenfield monorepo — React SPA (`apps/web`), Hono API (`packages/api`), shared Zod contracts (`packages/schemas`). Humans: see [`README.md`](./README.md) for overview and quick start.
+
+**You are an agent working in this repo.**
+
+**Read order:** this file → `PLAN.md` (if doing feature work) → the protocol for your current phase (see table below).
 
 **Nested `AGENTS.md`:** packages ship their own files; the closest one to edited files takes precedence. Root rules here still apply unless a nested file overrides for that tree.
+
+## Harness files
+
+| File        | Role                                                                   |
+| ----------- | ---------------------------------------------------------------------- |
+| `AGENTS.md` | Canonical instructions (this file) — Cursor, Codex, and similar tools  |
+| `CLAUDE.md` | Claude Code only — contains `@AGENTS.md`; do not duplicate rules there |
 
 ## Project overview
 
@@ -16,13 +27,27 @@ Greenfield monorepo — React SPA (`apps/web`), Hono API (`packages/api`), share
 
 Feature plans → [`PLAN.md`](./PLAN.md). Visual identity → [`DESIGN.md`](./DESIGN.md). Glossary → [`CONTEXT.md`](./CONTEXT.md).
 
+## Phase → protocol
+
+| Phase              | Read                                                                     |
+| ------------------ | ------------------------------------------------------------------------ |
+| Session start      | this file                                                                |
+| Feature kickoff    | [`docs/kickoff-protocol.md`](./docs/kickoff-protocol.md)                 |
+| Implement          | [`docs/tdd-protocol.md`](./docs/tdd-protocol.md)                         |
+| E2e / acceptance   | [`docs/e2e-protocol.md`](./docs/e2e-protocol.md)                         |
+| Red gates          | [`docs/debug-protocol.md`](./docs/debug-protocol.md)                     |
+| Static analysis    | [`docs/static-analysis-protocol.md`](./docs/static-analysis-protocol.md) |
+| Before PR          | [`docs/security-protocol.md`](./docs/security-protocol.md)               |
+| Context compaction | [`docs/context-protocol.md`](./docs/context-protocol.md)                 |
+| Parallel delegates | [`docs/subagents-protocol.md`](./docs/subagents-protocol.md)             |
+
 ## Dev environment tips
 
-**First-time setup** (from repo root):
+**First-time setup** (from repo root; same as [`README.md`](./README.md) § Setup):
 
 ```sh
 cp .env.example .env
-sfw pnpm install
+pnpm install                     # recommended: sfw pnpm install
 pnpm exec playwright install chromium
 ./scripts/link-agent-skills.sh   # optional: .cursor/skills + .claude/skills → .agents/skills
 ```
@@ -31,7 +56,7 @@ pnpm exec playwright install chromium
 
 - `pnpm dev` — web on **5173**, API on **3001** (web proxies `/api` → API).
 - E2E uses **3101** (API) and **4174** (web preview) via `scripts/run-e2e.mjs` — do not assume dev ports in Playwright specs.
-- Use **`sfw pnpm`** for install/add/update/remove (registry access). Use plain **`pnpm`** for scripts (`dev`, `test`, `lint`, `typecheck`).
+- Prefer **`sfw pnpm`** for install/add/update/remove when [Socket Firewall](https://socket.dev) is available (supply-chain screening). Plain **`pnpm`** is fine for all commands, including scripts (`dev`, `test`, `lint`, `typecheck`).
 - Target one workspace package: `pnpm --filter @scaffold/web <script>` (same for `@scaffold/api`, `@scaffold/schemas`). Check each `package.json` `name` field — not the root package name.
 - After adding routes under `apps/web/src/routes/`, rebuild or run dev so TanStack Router regenerates `routeTree.gen.ts` — never hand-edit it.
 - UI work: read [`DESIGN.md`](./DESIGN.md) ([google-labs-code/design.md](https://github.com/google-labs-code/design.md)).
@@ -95,7 +120,7 @@ Follow [`docs/debug-protocol.md`](./docs/debug-protocol.md). **Do not claim done
 3. Hypothesize → fix minimum change → re-run the same gate, then the full suite.
 4. Up to **3** fix attempts per root error; then **escalate** with dossier status `escalated`.
 
-**Escalate immediately** (do not spin): plan ambiguity, architecture fork, missing infra (Playwright browser, ports, `sfw`), or flake (passes on bare re-run without code change).
+**Escalate immediately** (do not spin): plan ambiguity, architecture fork, missing infra (Playwright browser, ports, registry/network), or flake (passes on bare re-run without code change).
 
 Never weaken tests or assertions to green a gate.
 
@@ -113,10 +138,10 @@ Project skills in [`.agents/skills/`](./.agents/skills/) — inventory and lifec
 | ----- | ------------------- | ------------------------------------------------------------------------------------ |
 | 1     | **grill-with-docs** | Kickoff → `PLAN.md` approved                                                         |
 | 2     | **tdd**             | Red-green at Zod boundary                                                            |
-| 2b    | **acceptance**      | Happy + failure e2e from `PLAN.md` scenarios                                         |
-| 3     | **verify**          | Full gates + self-heal on failure                                                    |
-| 4     | **analyze**         | fallow (included in verify; run alone when triaging)                                 |
-| 5     | **security-review** | After `pnpm gate`; before PR — [`security-protocol.md`](./docs/security-protocol.md) |
+| 3     | **acceptance**      | Happy + failure e2e from `PLAN.md` scenarios                                         |
+| 4     | **verify**          | Full gates + self-heal on failure                                                    |
+| 5     | **analyze**         | fallow (included in verify; run alone when triaging)                                 |
+| 6     | **security-review** | After `pnpm gate`; before PR — [`security-protocol.md`](./docs/security-protocol.md) |
 | —     | **orchestrate**     | Parallel work / delegation — not part of feature lifecycle                           |
 
 Protocols are canonical; skills are pointers only.
@@ -145,11 +170,11 @@ Reference slice: Notes (`packages/schemas/src/note.ts` → API → `apps/web/src
 - Run **`pnpm gate`** before opening or updating a PR (same as [CI](./docs/ci-protocol.md)).
 - Run **`pnpm security:check`** + security-review checklist before PR when the change is a feature slice or touches dependencies ([security-protocol](./docs/security-protocol.md)).
 - Pre-commit (Lefthook) runs **fast gates only** (`typecheck` + `lint` + **agent-policy**) — see [ADR 0001](./docs/adr/0001-tiered-quality-gates.md), [ADR 0002](./docs/adr/0002-static-analysis-tier.md), and [ADR 0004](./docs/adr/0004-no-agent-suppressions.md). E2e, fallow, and security review are not in the hook.
-- Flag new dependencies in the PR/summary; install only via `sfw pnpm`.
+- Flag new dependencies in the PR/summary; prefer `sfw pnpm` for install/add/update when available.
 - Only create commits or PRs when the human asks.
 
 ## Recovery
 
 ```sh
-git stash && git checkout main && sfw pnpm install && pnpm gate
+git stash && git checkout main && pnpm install && pnpm gate
 ```

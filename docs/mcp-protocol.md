@@ -84,7 +84,7 @@ no-mistakes evidence pipeline wires in fork #11.
 - Run full gate before claiming done — MCP exploration is not verification
 - On e2e red: read trace, use browser MCP if available, fix code, re-run `pnpm test`
 - On analyze red: read JSON verdict first; fallow MCP only if attribution unclear
-- Do not add MCP servers to the monorepo `package.json` without human approval and `sfw pnpm`
+- Do not add MCP servers to the monorepo `package.json` without human approval; prefer `sfw pnpm` for the install
 - Subagents follow [`subagents-protocol.md`](./subagents-protocol.md) — same gates, MCP optional
 
 ## Related

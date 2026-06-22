@@ -1,6 +1,6 @@
 # CI protocol
 
-Canonical CI/CD procedure for this scaffold. GitHub Actions re-runs the **full gate** — same commands as local done, plus supply-chain install via `sfw`.
+Canonical CI/CD procedure for this scaffold. GitHub Actions re-runs the **full gate** — same commands as local done. CI installs via `sfw` for supply-chain screening; local dev does not require Socket Firewall.
 
 Complements [ADR 0001](./adr/0001-tiered-quality-gates.md) (CI tier) and [ADR 0006](./adr/0006-ci-github-actions.md).
 
@@ -41,7 +41,7 @@ Workflow: [`.github/workflows/ci.yml`](../.github/workflows/ci.yml)
 | Step                                      | Purpose                                                   |
 | ----------------------------------------- | --------------------------------------------------------- |
 | `fetch-depth: 0`                          | fallow merge-base attribution on PRs                      |
-| `sfw pnpm install --frozen-lockfile`      | Supply-chain screened install ([fork #1](../WORKFLOW.md)) |
+| `sfw pnpm install --frozen-lockfile`      | Supply-chain screened install (CI only; optional locally) |
 | `playwright install chromium --with-deps` | E2e browser + OS deps                                     |
 | `pnpm gate`                               | Full gate                                                 |
 | Artifact upload on failure                | `playwright-report/`, `test-results/` (7-day retention)   |
@@ -53,7 +53,7 @@ Status badge in [`README.md`](../README.md).
 Before opening a PR, run the same suite:
 
 ```sh
-sfw pnpm install --frozen-lockfile
+pnpm install --frozen-lockfile   # recommended: sfw pnpm install --frozen-lockfile
 pnpm exec playwright install chromium
 pnpm gate
 ```

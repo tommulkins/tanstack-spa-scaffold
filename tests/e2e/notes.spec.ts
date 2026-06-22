@@ -31,6 +31,10 @@ test('rejects whitespace-only note without creating one', async ({ page }) => {
     page.getByRole('heading', { name: 'Notes', level: 1 }),
   ).toBeVisible();
 
+  const list = page.getByRole('list', { name: 'Notes list' });
+  await expect(list).toBeVisible();
+  const listTextBefore = await list.innerText();
+
   let postSucceeded = false;
   page.on('response', (response) => {
     if (
@@ -46,8 +50,6 @@ test('rejects whitespace-only note without creating one', async ({ page }) => {
   await page.getByRole('button', { name: 'Add note' }).click();
 
   await expect(page.getByRole('alert')).toContainText('Text is required');
-  await expect(page.getByRole('list', { name: 'Notes list' })).toContainText(
-    'No notes yet.',
-  );
+  await expect(list).toHaveText(listTextBefore);
   expect(postSucceeded).toBe(false);
 });

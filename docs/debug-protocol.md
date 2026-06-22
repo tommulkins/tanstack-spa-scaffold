@@ -72,7 +72,7 @@ Stop retrying and ask — even before the retry budget is exhausted:
 
 - **Product / plan ambiguity** — spec unclear, conflicting with `PLAN.md`, or needs scope change
 - **Architecture fork** — fix requires ADR-level trade-off
-- **Infra / environment** — missing Playwright browser, port in use, `sfw`/registry block, sandbox permission
+- **Infra / environment** — missing Playwright browser, port in use, registry/network block, sandbox permission
 - **Flake** — same command passes on immediate re-run without code change (note in dossier; do not “fix” with retries)
 - **Suspected test bug vs product bug** — agent cannot tell which is wrong without human call
 
